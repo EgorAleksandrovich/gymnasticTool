@@ -1,0 +1,61 @@
+﻿<Window x:Class="First_appl_MVVM.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:First_appl_MVVM"
+        xmlns:viewModels="clr-namespace:First_appl_MVVM.ViewModels"
+        Title="MainWindow" Height="350" Width="525">
+    <Window.DataContext>
+        <viewModels:ViewModel/>
+    </Window.DataContext>
+    <StackPanel>
+        <ComboBox Name="Result" Height="30" VerticalAlignment="Top">
+            <ComboBoxItem IsSelected="True">
+                <StackPanel>
+                    <TextBlock FontSize="20">Choose a discipline</TextBlock>
+                </StackPanel>
+            </ComboBoxItem>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock FontSize="20">Floor exercise</TextBlock>
+                <Image Source="flor.png" MaxHeight="30"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock FontSize="20">Pommel horse</TextBlock>
+                <Image Source="hors.jpg" MaxHeight="30"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock FontSize="20">Still rings</TextBlock>
+                <Image Source="rings.png" MaxHeight="30"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock FontSize="20">Vault</TextBlock>
+                <Image Source="vault.png" MaxHeight="30"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock FontSize="20">Parallel bars</TextBlock>
+                <Image Source="pbar.png" MaxHeight="30"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock FontSize="20">High bar</TextBlock>
+                <Image Source="hbar.png" MaxHeight="30"/>
+            </StackPanel>
+            <TextBlock FontSize="20">Total</TextBlock>
+        </ComboBox>
+
+        <ListView ItemsSource="{Binding Path=Gymnasts}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Firstname" Width="Auto" 
+                  DisplayMemberBinding="{Binding FirstName}" >
+                    </GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding LastName}" 
+                  Header="Lastname" Width="100"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding DisciplineRatings}" 
+                  Header="Floor exercise" Width="100"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        
+        <Button Width="40" Height="40" HorizontalAlignment="Left" Margin="20" Content="+"/>
+        
+    </StackPanel>
+</Window>

@@ -12,42 +12,87 @@ namespace First_appl_MVVM.ViewModels
 {
     class ViewModel : ViewModelBase
     {
-        private AllRating _selectedDiscipline;
+        private Discipline _selectedDiscipline;
+        private List<Gymnast> _gymnasts;
+        private List<Ratings> _ratings;
 
-        public ObservableCollection<AllRating> GymnasticsRatingsDiscipline { get; set; }
-        public ObservableCollection<Gymnast> Gymnasts { get; set; }
-        public ObservableCollection<DisciplineRating> DisciplineRatings { get; set; }
+        public ObservableCollection<PersonalRatingsDiscpline> PersonalRatingsDiscplins { get; set; }
+        public ObservableCollection<Discipline> Disciplins;
 
-        public AllRating GymnastsRatings
+        public Discipline SelectedDiscipline 
         {
-            get { return _selectedDiscipline; }
             set
             {
                 _selectedDiscipline = value;
-                OnPropertyChanged("GymnasticsRatings");
+                OnPropertyChanged("SelectedDiscipline");
             }
         }
 
         public ViewModel()
         {
-            AllRating yuriRatings = new AllRating() { FloorExercise = 13, PommelHorse = 14, StillRings = 15, Vault = 13.4, ParallelBars = 15.4, HighBar = 15.6, Total = 75 };
-            AllRating egorRatings = new AllRating() { FloorExercise = 13.5, PommelHorse = 14.5, StillRings = 15.3, Vault = 12.4, ParallelBars = 14.4, HighBar = 14.6, Total = 76 };
-            AllRating stasRatings = new AllRating() { FloorExercise = 15, PommelHorse = 15.4, StillRings = 14, Vault = 15, ParallelBars = 13, HighBar = 13, Total = 78 };
-            AllRating romanRatings = new AllRating() { FloorExercise = 14.2, PommelHorse = 14.6, StillRings = 13, Vault = 16, ParallelBars = 14.5, HighBar = 15, Total = 8 };
-
-            Gymnasts = new ObservableCollection<Gymnast>
+            Repository repository = new Repository();
+            _gymnasts = repository.GetGymnasts();
+            _ratings = repository.GetDisciplineRatings();
+            
+            Disciplins = new ObservableCollection<Discipline>
             {
-                new Gymnast { FirstName="Dorokhov", LastName="Yra", Country="Ukraina", Ratings = yuriRatings},
-                new Gymnast { FirstName="Bolshakov", LastName="Egor", Country="Norway", Ratings = egorRatings},
-                new Gymnast { FirstName="Stefanovskii", LastName="Stas", Country="Germani", Ratings = stasRatings},
-                new Gymnast { FirstName="Palkin", LastName="Roman", Country="USA", Ratings = romanRatings}
-
+                new Discipline { discipline = EnumDiscipline.DisciplineIs.FloorExercise},
+                new Discipline { discipline = EnumDiscipline.DisciplineIs.PommelHorse},
+                new Discipline { discipline = EnumDiscipline.DisciplineIs.StillRings},
+                new Discipline { discipline = EnumDiscipline.DisciplineIs.Vault},
+                new Discipline { discipline = EnumDiscipline.DisciplineIs.ParallelBars},
+                new Discipline { discipline = EnumDiscipline.DisciplineIs.HighBar}
             };
 
-            DisciplineRatings = new ObservableCollection<DisciplineRating>
+            PersonalRatingsDiscplins = new ObservableCollection<PersonalRatingsDiscpline>
             {
-                new DisciplineRating { rating=}
+                new PersonalRatingsDiscpline { firstName = GetFirstName(_gymnasts, 1), lastName = GetName(_gymnasts, 1), rating = GetRating(_ratings, 1, _selectedDiscipline)},
+                new PersonalRatingsDiscpline { firstName = GetFirstName(_gymnasts, 2), lastName = GetName(_gymnasts, 2), rating = GetRating(_ratings, 2, _selectedDiscipline)},
+                new PersonalRatingsDiscpline { firstName = GetFirstName(_gymnasts, 3), lastName = GetName(_gymnasts, 3), rating = GetRating(_ratings, 3, _selectedDiscipline)},
+                new PersonalRatingsDiscpline { firstName = GetFirstName(_gymnasts, 4), lastName = GetName(_gymnasts, 4), rating = GetRating(_ratings, 4, _selectedDiscipline)},
             };
+        }
+
+        public string GetFirstName(List<Gymnast> gymnasts, int id)
+        {
+            string firstName = null;
+            foreach(Gymnast gymnast in gymnasts)
+            {
+                if(gymnast.ID == id)
+                {
+                    firstName = gymnast.LastName; 
+                }
+            }
+            return firstName;
+        }
+
+        public string GetName(List<Gymnast> gymnasts, int id)
+        {
+            string Name = null;
+            foreach (Gymnast gymnast in gymnasts)
+            {
+                if (gymnast.ID == id)
+                {
+                    Name = gymnast.FirstName;
+                }
+            }
+            return Name;
+        }
+
+        public double GetRating(List<Ratings> disciplineRatings, int id, Discipline discipline)
+        {
+            double rating = 0;
+            foreach (Ratings ratings in disciplineRatings)
+            {
+                if (ratings.gymnastId == id)
+                {
+                   if (Convert.ToString(discipline) == Convert.ToString(ratings.discipline))
+                   {
+                       rating = ratings.rating;
+                   }
+                }
+            }
+            return rating;
         }
     }
 }

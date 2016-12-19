@@ -8,7 +8,7 @@
         <viewModels:ViewModel/>
     </Window.DataContext>
     <StackPanel>
-        <ComboBox Name="Result" Height="30" VerticalAlignment="Top">
+        <ComboBox Name="Result" Height="30" VerticalAlignment="Top" SelectedItem="SelectedDiscipline">
             <ComboBoxItem IsSelected="True">
                 <StackPanel>
                     <TextBlock FontSize="20">Choose a discipline</TextBlock>
@@ -41,16 +41,16 @@
             <TextBlock FontSize="20">Total</TextBlock>
         </ComboBox>
 
-        <ListView ItemsSource="{Binding Path=Gymnasts}">
+        <ListView ItemsSource="{Binding Path=PersonalRatingsDiscplins}">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Firstname" Width="Auto" 
-                  DisplayMemberBinding="{Binding FirstName}" >
+                  DisplayMemberBinding="{Binding firstName}" >
                     </GridViewColumn>
-                    <GridViewColumn DisplayMemberBinding="{Binding LastName}" 
-                  Header="Lastname" Width="100"/>
-                    <GridViewColumn DisplayMemberBinding="{Binding DisciplineRatings}" 
-                  Header="Floor exercise" Width="100"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding lastName}" 
+                  Header="Lastname" Width="auto"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding rating}" 
+                  Header="{Binding Discipline}" Width="auto"/>
                 </GridView>
             </ListView.View>
         </ListView>

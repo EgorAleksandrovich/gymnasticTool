@@ -53,8 +53,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Data\AllRating.cs" />
-    <Compile Include="Data\DisciplineRating.cs" />
+    <Compile Include="Data\Displine.cs" />
+    <Compile Include="Data\EnumDiscipline.cs" />
+    <Compile Include="Data\PersonalRatingsDiscpline.cs" />
+    <Compile Include="Data\Ratings.cs" />
+    <Compile Include="Data\Repository.cs" />
     <Compile Include="ViewModels\ViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Page Include="MainWindow.xaml">

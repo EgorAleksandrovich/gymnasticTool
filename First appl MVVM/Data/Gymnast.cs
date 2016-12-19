@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
 using System.ComponentModel;
+using System.Collections.ObjectModel;
 
 namespace First_appl_MVVM.Data
 {
@@ -13,8 +14,8 @@ namespace First_appl_MVVM.Data
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Country { get; set; }
+        public int ID { get; set; }
 
-        public AllRating Ratings { get; set; }
 
         public double CalcTotal(double FloorExercise, double PommeHorse,
             double StillRings, double Vault, double ParallelBars,

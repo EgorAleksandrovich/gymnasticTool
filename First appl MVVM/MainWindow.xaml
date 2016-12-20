@@ -8,13 +8,14 @@
         <viewModels:ViewModel/>
     </Window.DataContext>
     <StackPanel>
-        <ComboBox Name="Result" Height="30" VerticalAlignment="Top" SelectedItem="SelectedDiscipline">
-            <ComboBoxItem IsSelected="True">
+        <ComboBox Name="Result" Height="30" VerticalAlignment="Top" ItemsSource="{Binding Path=Disciplins}" SelectedItem="{Binding SelectedDiscipline, Mode=TwoWay}" DisplayMemberPath="DisplayName">
+            <!--<Label Content="{Binding SelectedDiscipline}"/>-->
+            <!--<ComboBoxItem IsSel--><!--ected="True">
                 <StackPanel>
                     <TextBlock FontSize="20">Choose a discipline</TextBlock>
                 </StackPanel>
-            </ComboBoxItem>
-            <StackPanel Orientation="Horizontal">
+            </ComboBoxItem>-->
+            <!--<StackPanel Orientation="Horizontal">
                 <TextBlock FontSize="20">Floor exercise</TextBlock>
                 <Image Source="flor.png" MaxHeight="30"/>
             </StackPanel>
@@ -38,7 +39,7 @@
                 <TextBlock FontSize="20">High bar</TextBlock>
                 <Image Source="hbar.png" MaxHeight="30"/>
             </StackPanel>
-            <TextBlock FontSize="20">Total</TextBlock>
+            <TextBlock FontSize="20">Total</TextBlock>-->
         </ComboBox>
 
         <ListView ItemsSource="{Binding Path=PersonalRatingsDiscplins}">
@@ -50,7 +51,7 @@
                     <GridViewColumn DisplayMemberBinding="{Binding lastName}" 
                   Header="Lastname" Width="auto"/>
                     <GridViewColumn DisplayMemberBinding="{Binding rating}" 
-                  Header="{Binding Discipline}" Width="auto"/>
+                  Header="{Binding Disciplins}" Width="auto"/>
                 </GridView>
             </ListView.View>
         </ListView>

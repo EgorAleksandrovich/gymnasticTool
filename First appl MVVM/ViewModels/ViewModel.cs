@@ -17,13 +17,18 @@ namespace First_appl_MVVM.ViewModels
         private List<Ratings> _ratings;
 
         public ObservableCollection<PersonalRatingsDiscpline> PersonalRatingsDiscplins { get; set; }
-        public ObservableCollection<Discipline> Disciplins;
+        public ObservableCollection<Discipline> Disciplins { get; set; }
 
         public Discipline SelectedDiscipline 
         {
+            get 
+            { 
+                return _selectedDiscipline; 
+            }
             set
             {
                 _selectedDiscipline = value;
+                ChangeDiscipline(_selectedDiscipline);
                 OnPropertyChanged("SelectedDiscipline");
             }
         }
@@ -33,23 +38,15 @@ namespace First_appl_MVVM.ViewModels
             Repository repository = new Repository();
             _gymnasts = repository.GetGymnasts();
             _ratings = repository.GetDisciplineRatings();
-            
             Disciplins = new ObservableCollection<Discipline>
             {
-                new Discipline { discipline = EnumDiscipline.DisciplineIs.FloorExercise},
-                new Discipline { discipline = EnumDiscipline.DisciplineIs.PommelHorse},
-                new Discipline { discipline = EnumDiscipline.DisciplineIs.StillRings},
-                new Discipline { discipline = EnumDiscipline.DisciplineIs.Vault},
-                new Discipline { discipline = EnumDiscipline.DisciplineIs.ParallelBars},
-                new Discipline { discipline = EnumDiscipline.DisciplineIs.HighBar}
-            };
-
-            PersonalRatingsDiscplins = new ObservableCollection<PersonalRatingsDiscpline>
-            {
-                new PersonalRatingsDiscpline { firstName = GetFirstName(_gymnasts, 1), lastName = GetName(_gymnasts, 1), rating = GetRating(_ratings, 1, _selectedDiscipline)},
-                new PersonalRatingsDiscpline { firstName = GetFirstName(_gymnasts, 2), lastName = GetName(_gymnasts, 2), rating = GetRating(_ratings, 2, _selectedDiscipline)},
-                new PersonalRatingsDiscpline { firstName = GetFirstName(_gymnasts, 3), lastName = GetName(_gymnasts, 3), rating = GetRating(_ratings, 3, _selectedDiscipline)},
-                new PersonalRatingsDiscpline { firstName = GetFirstName(_gymnasts, 4), lastName = GetName(_gymnasts, 4), rating = GetRating(_ratings, 4, _selectedDiscipline)},
+                new Discipline { DisciplineEnum = DisciplineIs.FloorExercise},
+                new Discipline { DisciplineEnum = DisciplineIs.PommelHorse},
+                new Discipline { DisciplineEnum = DisciplineIs.StillRings},
+                new Discipline { DisciplineEnum = DisciplineIs.Vault},
+                new Discipline { DisciplineEnum = DisciplineIs.ParallelBars},
+                new Discipline { DisciplineEnum = DisciplineIs.HighBar},
+                new Discipline { DisciplineEnum = DisciplineIs.Total}
             };
         }
 
@@ -93,6 +90,16 @@ namespace First_appl_MVVM.ViewModels
                 }
             }
             return rating;
+        }
+        public void ChangeDiscipline(Discipline discipline)
+        {
+            PersonalRatingsDiscplins = new ObservableCollection<PersonalRatingsDiscpline>
+            {
+                new PersonalRatingsDiscpline { firstName = GetFirstName(_gymnasts, 1), lastName = GetName(_gymnasts, 1), rating = GetRating(_ratings, 1, discipline)},
+                new PersonalRatingsDiscpline { firstName = GetFirstName(_gymnasts, 2), lastName = GetName(_gymnasts, 2), rating = GetRating(_ratings, 2, discipline)},
+                new PersonalRatingsDiscpline { firstName = GetFirstName(_gymnasts, 3), lastName = GetName(_gymnasts, 3), rating = GetRating(_ratings, 3, discipline)},
+                new PersonalRatingsDiscpline { firstName = GetFirstName(_gymnasts, 4), lastName = GetName(_gymnasts, 4), rating = GetRating(_ratings, 4, discipline)}
+            };
         }
     }
 }

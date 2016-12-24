@@ -28,7 +28,7 @@ namespace First_appl_MVVM.ViewModels
             set
             {
                 _selectedDiscipline = value;
-                ChangeDiscipline(_selectedDiscipline);
+                ChangeDiscipline();
                 OnPropertyChanged("SelectedDiscipline");
             }
         }
@@ -47,6 +47,14 @@ namespace First_appl_MVVM.ViewModels
                 new Discipline { DisciplineEnum = DisciplineIs.ParallelBars},
                 new Discipline { DisciplineEnum = DisciplineIs.HighBar},
                 new Discipline { DisciplineEnum = DisciplineIs.Total}
+            };
+
+            PersonalRatingsDiscplins = new ObservableCollection<PersonalRatingsDiscpline>
+            {
+                new PersonalRatingsDiscpline { firstName = GetFirstName(_gymnasts, 1), lastName = GetName(_gymnasts, 1), rating = 0, Id = 1, discipline = "ratings"},
+                new PersonalRatingsDiscpline { firstName = GetFirstName(_gymnasts, 2), lastName = GetName(_gymnasts, 2), rating = 0, Id = 2, discipline = "ratings"},
+                new PersonalRatingsDiscpline { firstName = GetFirstName(_gymnasts, 3), lastName = GetName(_gymnasts, 3), rating = 0, Id = 3, discipline = "ratings"},
+                new PersonalRatingsDiscpline { firstName = GetFirstName(_gymnasts, 4), lastName = GetName(_gymnasts, 4), rating = 0, Id = 4, discipline = "ratings"}
             };
         }
 
@@ -76,30 +84,25 @@ namespace First_appl_MVVM.ViewModels
             return Name;
         }
 
-        public double GetRating(List<Ratings> disciplineRatings, int id, Discipline discipline)
+        public double GetRating( int id, Discipline inputDiscipline)
         {
             double rating = 0;
-            foreach (Ratings ratings in disciplineRatings)
+            foreach (Ratings ratings in _ratings)
+            if (ratings.gymnastId == id)
             {
-                if (ratings.gymnastId == id)
+                if (inputDiscipline.DisplayName == ratings.discipline.ToString())
                 {
-                   if (Convert.ToString(discipline) == Convert.ToString(ratings.discipline))
-                   {
-                       rating = ratings.rating;
-                   }
+                    rating = ratings.rating;
                 }
             }
             return rating;
         }
-        public void ChangeDiscipline(Discipline discipline)
+        public void ChangeDiscipline()
         {
-            PersonalRatingsDiscplins = new ObservableCollection<PersonalRatingsDiscpline>
+            foreach (PersonalRatingsDiscpline viewRating in PersonalRatingsDiscplins)
             {
-                new PersonalRatingsDiscpline { firstName = GetFirstName(_gymnasts, 1), lastName = GetName(_gymnasts, 1), rating = GetRating(_ratings, 1, discipline)},
-                new PersonalRatingsDiscpline { firstName = GetFirstName(_gymnasts, 2), lastName = GetName(_gymnasts, 2), rating = GetRating(_ratings, 2, discipline)},
-                new PersonalRatingsDiscpline { firstName = GetFirstName(_gymnasts, 3), lastName = GetName(_gymnasts, 3), rating = GetRating(_ratings, 3, discipline)},
-                new PersonalRatingsDiscpline { firstName = GetFirstName(_gymnasts, 4), lastName = GetName(_gymnasts, 4), rating = GetRating(_ratings, 4, discipline)}
-            };
+                viewRating.rating = GetRating(1, _selectedDiscipline);
+            }
         }
     }
 }

@@ -50,8 +50,8 @@
                     </GridViewColumn>
                     <GridViewColumn DisplayMemberBinding="{Binding lastName}" 
                   Header="Lastname" Width="auto"/>
-                    <GridViewColumn DisplayMemberBinding="{Binding rating}" 
-                  Header="{Binding Disciplins}" Width="auto"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding rating, UpdateSourceTrigger=PropertyChanged}" 
+                  Header="" Width="auto"/>
                 </GridView>
             </ListView.View>
         </ListView>

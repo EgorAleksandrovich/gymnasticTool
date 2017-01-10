@@ -8,9 +8,9 @@ namespace First_appl_MVVM.Data
 {
     public class Ratings
     {
-        public DisciplineIs discipline { get; set; }
-        public double rating { get; set; }
-        public int gymnastId { get; set; }
-        public DateTime dateOfCompetition { get; set; }
+        public DisciplineIs Discipline { get; set; }
+        public double Rating { get; set; }
+        public int GymnastId { get; set; }
+        public DateTime DateOfCompetition { get; set; }
     }
 }

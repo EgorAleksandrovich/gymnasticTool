@@ -3,60 +3,55 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:First_appl_MVVM"
         xmlns:viewModels="clr-namespace:First_appl_MVVM.ViewModels"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="390" Width="500">
     <Window.DataContext>
         <viewModels:ViewModel/>
     </Window.DataContext>
+    <Window.Resources>
+        <CollectionViewSource x:Key="AllDisciplines" Source="{Binding Path=Disciplins}"/>
+    </Window.Resources>
     <StackPanel>
-        <ComboBox Name="Result" Height="30" VerticalAlignment="Top" ItemsSource="{Binding Path=Disciplins}" SelectedItem="{Binding SelectedDiscipline, Mode=TwoWay}" DisplayMemberPath="DisplayName">
-            <!--<Label Content="{Binding SelectedDiscipline}"/>-->
-            <!--<ComboBoxItem IsSel--><!--ected="True">
-                <StackPanel>
-                    <TextBlock FontSize="20">Choose a discipline</TextBlock>
-                </StackPanel>
-            </ComboBoxItem>-->
-            <!--<StackPanel Orientation="Horizontal">
-                <TextBlock FontSize="20">Floor exercise</TextBlock>
-                <Image Source="flor.png" MaxHeight="30"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock FontSize="20">Pommel horse</TextBlock>
-                <Image Source="hors.jpg" MaxHeight="30"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock FontSize="20">Still rings</TextBlock>
-                <Image Source="rings.png" MaxHeight="30"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock FontSize="20">Vault</TextBlock>
-                <Image Source="vault.png" MaxHeight="30"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock FontSize="20">Parallel bars</TextBlock>
-                <Image Source="pbar.png" MaxHeight="30"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock FontSize="20">High bar</TextBlock>
-                <Image Source="hbar.png" MaxHeight="30"/>
-            </StackPanel>
-            <TextBlock FontSize="20">Total</TextBlock>-->
+        <ComboBox SelectedIndex="0" SelectedItem="{Binding SelectedDiscipline, Mode=TwoWay}" >
+            <ComboBox.ItemsSource>
+                <CompositeCollection>
+                    <ListBoxItem>Choose a discipline</ListBoxItem>
+                    <CollectionContainer Collection="{Binding Source={StaticResource AllDisciplines}}" />
+                </CompositeCollection>
+            </ComboBox.ItemsSource>
         </ComboBox>
 
-        <ListView ItemsSource="{Binding Path=PersonalRatingsDiscplins}">
+        <ListView ItemsSource="{Binding PersonalRatingsDiscplins}" Height="auto" MaxHeight="110">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Firstname" Width="Auto" 
-                  DisplayMemberBinding="{Binding firstName}" >
+                  DisplayMemberBinding="{Binding FirstName}" >
                     </GridViewColumn>
-                    <GridViewColumn DisplayMemberBinding="{Binding lastName}" 
+                    <GridViewColumn DisplayMemberBinding="{Binding LastName}" 
                   Header="Lastname" Width="auto"/>
-                    <GridViewColumn DisplayMemberBinding="{Binding rating, UpdateSourceTrigger=PropertyChanged}" 
-                  Header="" Width="auto"/>
+                    <GridViewColumn Header="Ratings" DisplayMemberBinding="{Binding Rating}" Width="auto"/>
                 </GridView>
             </ListView.View>
         </ListView>
-        
-        <Button Width="40" Height="40" HorizontalAlignment="Left" Margin="20" Content="+"/>
-        
+        <Grid Margin="10,10,200,0">
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"></ColumnDefinition>
+                <ColumnDefinition Width="auto"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Button Width="auto" Height="auto" Grid.Column="0" Margin="10" Content="Delete gymnast"/>
+            <Button Command="{Binding AddCommand}" Width="auto" Grid.Column="0" Grid.Row="2" Height="auto" HorizontalAlignment="Center" Content="Add gymnast"/>
+            <StackPanel Grid.Row="1" Grid.ColumnSpan="3" Background="LightGray" Margin="10" DataContext="{Binding NewGymnastInfo}">
+                <TextBlock  Text="Add new gymnast" Margin="20,5" Foreground="Red" FontSize="15" HorizontalAlignment="Center"/>
+                <TextBlock Text="Firstname" Margin="10,0,0,0"/>
+                <TextBox Text="{Binding FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="10,0,10,0"/>
+                <TextBlock Text="Lastname" Margin="10,0,0,0"/>
+                <TextBox Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged}" Margin="10,0,10,15"/>
+            </StackPanel>
+        </Grid>
     </StackPanel>
 </Window>

@@ -53,13 +53,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Command\RelayComand.cs" />
+    <Compile Include="Data\AllAroundRating.cs" />
     <Compile Include="Data\Displine.cs" />
     <Compile Include="Data\EnumDiscipline.cs" />
     <Compile Include="Data\PersonalRatingsDiscpline.cs" />
     <Compile Include="Data\Ratings.cs" />
     <Compile Include="Data\Repository.cs" />
-    <Compile Include="ViewModels\ViewModel.cs" />
-    <Compile Include="ViewModels\ViewModelBase.cs" />
+    <Compile Include="ViewModel\ViewModel.cs" />
+    <Compile Include="ViewModel\ViewModelBase.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -102,16 +104,16 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="flor.png" />
+    <Resource Include="Data\images\flor.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="hors.jpg" />
+    <Resource Include="Data\images\hors.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="hbar.png" />
-    <Resource Include="pbar.png" />
-    <Resource Include="rings.png" />
-    <Resource Include="vault.png" />
+    <Resource Include="Data\images\hbar.png" />
+    <Resource Include="Data\images\pbar.png" />
+    <Resource Include="Data\images\rings.png" />
+    <Resource Include="Data\images\vault.png" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

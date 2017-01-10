@@ -82,7 +82,7 @@ namespace First_appl_MVVM.ViewModels
             _gymnasts = repository.GetGymnasts();
             _ratings = repository.GetDisciplineRatings();
             _allAroundRatings = repository.GetAllAroundRatings();
-            newGymnastInfo = new Gymnast { LastName = "", FirstName = "" };   // !!
+            newGymnastInfo = new Gymnast();   // !!
 
             Disciplins = new ObservableCollection<string>
             {

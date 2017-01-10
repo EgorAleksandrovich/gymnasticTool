@@ -20,23 +20,23 @@ namespace First_appl_MVVM.ViewModels
         public ObservableCollection<PersonalRatingsDiscpline> NewPersonalRatingsDiscplins { get; set; }
         public ObservableCollection<PersonalRatingsDiscpline> personalRatingsDiscplins;
         public ObservableCollection<string> Disciplins { get; set; }
-        public Gymnast newGymnastInfo;
+        public Gymnast newGymnastInfo;   // !!!!!!!
         
 
         public RelayComand AddCommand { get; set; }
 
         private void Add()
         {
-            PersonalRatingsDiscpline newGymnast = new PersonalRatingsDiscpline();
-            int indexNewGymnast = personalRatingsDiscplins.Count();
-            PersonalRatingsDiscplins.Insert(indexNewGymnast, newGymnast);
-            newGymnast.FirstName = newGymnastInfo.FirstName;
-            newGymnast.LastName = newGymnastInfo.LastName;
-            newGymnast.Id = indexNewGymnast;
-            OnPropertyChanged("PersonalRatingsDiscplins");
+            PersonalRatingsDiscpline newGymnast = new PersonalRatingsDiscpline();   // !!!!!!!
+            int indexNewGymnast = personalRatingsDiscplins.Count();                     // !!!!!!!
+            PersonalRatingsDiscplins.Insert(indexNewGymnast, newGymnast);           // !!!!!!!
+            newGymnast.FirstName = newGymnastInfo.FirstName;                         // !!!!!!!
+            newGymnast.LastName = newGymnastInfo.LastName;                          // !!!!!!!
+            newGymnast.Id = indexNewGymnast;                                        // !!!!!!!
+            OnPropertyChanged("PersonalRatingsDiscplins");                          // !!!!!!!
         }
 
-        public Gymnast NewGymnastInfo
+        public Gymnast NewGymnastInfo // !!!!!!!
         {
             get
             {
@@ -82,7 +82,7 @@ namespace First_appl_MVVM.ViewModels
             _gymnasts = repository.GetGymnasts();
             _ratings = repository.GetDisciplineRatings();
             _allAroundRatings = repository.GetAllAroundRatings();
-            newGymnastInfo = new Gymnast { LastName = "", FirstName = "" };
+            newGymnastInfo = new Gymnast { LastName = "", FirstName = "" };   // !!
 
             Disciplins = new ObservableCollection<string>
             {

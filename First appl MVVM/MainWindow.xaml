@@ -3,14 +3,17 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:First_appl_MVVM"
         xmlns:viewModels="clr-namespace:First_appl_MVVM.ViewModels"
-        Title="MainWindow" Height="390" Width="500">
+        Title="MainWindow" Height="auto" Width="400">
     <Window.DataContext>
         <viewModels:ViewModel/>
     </Window.DataContext>
+    
     <Window.Resources>
         <CollectionViewSource x:Key="AllDisciplines" Source="{Binding Path=Disciplins}"/>
     </Window.Resources>
+    
     <StackPanel>
+
         <ComboBox SelectedIndex="0" SelectedItem="{Binding SelectedDiscipline, Mode=TwoWay}" >
             <ComboBox.ItemsSource>
                 <CompositeCollection>
@@ -20,7 +23,16 @@
             </ComboBox.ItemsSource>
         </ComboBox>
 
-        <ListView ItemsSource="{Binding PersonalRatingsDiscplins}" Height="auto" MaxHeight="110">
+        <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding PersonalRatingsDiscplins}" SelectedItem="{Binding SelectedPersonalRatingsDiscpline}" HorizontalGridLinesBrush="DarkBlue">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Last name" Binding="{Binding LastName}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="First name" Binding="{Binding FirstName}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Country" Binding="{Binding Country}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Ratings" Binding="{Binding Rating}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        
+        <!--<ListView ItemsSource="{Binding PersonalRatingsDiscplins}" SelectedItem="{Binding SelectedPersonalRatingsDiscpline}" Height="auto" MaxHeight="110">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Firstname" Width="Auto" 
@@ -28,11 +40,14 @@
                     </GridViewColumn>
                     <GridViewColumn DisplayMemberBinding="{Binding LastName}" 
                   Header="Lastname" Width="auto"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Country}" 
+                  Header="Country" Width="auto"/>
                     <GridViewColumn Header="Ratings" DisplayMemberBinding="{Binding Rating}" Width="auto"/>
                 </GridView>
             </ListView.View>
-        </ListView>
-        <Grid Margin="10,10,200,0">
+        </ListView>-->
+        
+        <Grid Margin="10,10,10,0">
             <Grid.RowDefinitions>
                 <RowDefinition></RowDefinition>
                 <RowDefinition></RowDefinition>
@@ -43,14 +58,16 @@
                 <ColumnDefinition Width="auto"></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <Button Width="auto" Height="auto" Grid.Column="0" Margin="10" Content="Delete gymnast"/>
+            <Button CommandParameter="{Binding PersonalRatingsDiscplins}" Command="{Binding RemoveCommand}" Width="auto" Height="auto" Grid.Column="0" Margin="10" Content="Delete gymnast"/>
             <Button Command="{Binding AddCommand}" Width="auto" Grid.Column="0" Grid.Row="2" Height="auto" HorizontalAlignment="Center" Content="Add gymnast"/>
             <StackPanel Grid.Row="1" Grid.ColumnSpan="3" Background="LightGray" Margin="10" DataContext="{Binding NewGymnastInfo}">
                 <TextBlock  Text="Add new gymnast" Margin="20,5" Foreground="Red" FontSize="15" HorizontalAlignment="Center"/>
                 <TextBlock Text="Firstname" Margin="10,0,0,0"/>
                 <TextBox Text="{Binding FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="10,0,10,0"/>
                 <TextBlock Text="Lastname" Margin="10,0,0,0"/>
-                <TextBox Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged}" Margin="10,0,10,15"/>
+                <TextBox Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged}" Margin="10,0,10,0"/>
+                <TextBlock Text="Country" Margin="10,0,0,0"/>
+                <TextBox Text="{Binding Country, UpdateSourceTrigger=PropertyChanged}" Margin="10,0,10,15"/>
             </StackPanel>
         </Grid>
     </StackPanel>

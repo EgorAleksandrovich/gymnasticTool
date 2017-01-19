@@ -13,7 +13,7 @@ namespace First_appl_MVVM.Data
         public List<Ratings> DisciplineRatings { get; set; }
         public List<AllAroundRating> AllAroundRatings { get; set; }
 
-        public List<Gymnast> GetGymnasts()
+        public List<Gymnast> GymnastsInitialization()
         {
             Gymnasts = new List<Gymnast>
             {
@@ -25,7 +25,7 @@ namespace First_appl_MVVM.Data
             return Gymnasts;
         }
 
-        public List<Ratings> GetDisciplineRatings()
+        public List<Ratings> DisciplineRatingsInitialization()
         {
             DisciplineRatings = new List<Ratings>
             {
@@ -72,6 +72,23 @@ namespace First_appl_MVVM.Data
             };
             return AllAroundRatings;
         }
+
+        public void AddGymnast(Gymnast gymnastInfo)
+        {
+            Gymnast newGymnast = new Gymnast();
+            int indexNewGymnast = Gymnasts.Count();
+            Gymnasts.Insert(indexNewGymnast, newGymnast);
+            newGymnast.FirstName = gymnastInfo.FirstName;
+            newGymnast.LastName = gymnastInfo.LastName;
+            newGymnast.Country = gymnastInfo.Country;
+            newGymnast.ID = indexNewGymnast + 1;
+        }
+
+        public void RemoveGymnast(int removeId)
+        {
+            Gymnasts.RemoveAt(removeId-1);
+        }
+
          public double GetAllAroundRatingGymnast(int gymnastId, List<Ratings> disciplineRatings)
         {
              double allAroundRating = 0;

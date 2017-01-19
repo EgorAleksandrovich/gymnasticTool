@@ -8,6 +8,8 @@ using System.ComponentModel;
 using System.Collections.ObjectModel;
 using First_appl_MVVM.Data;
 using First_appl_MVVM.Command;
+using System.Windows;
+
 
 namespace First_appl_MVVM.ViewModels
 {
@@ -17,72 +19,18 @@ namespace First_appl_MVVM.ViewModels
         private List<Gymnast> _gymnasts;
         private List<Ratings> _ratings;
         private List<AllAroundRating> _allAroundRatings;
-        public ObservableCollection<PersonalRatingsDiscpline> NewPersonalRatingsDiscplins { get; set; }
-        public ObservableCollection<PersonalRatingsDiscpline> personalRatingsDiscplins;
-        public ObservableCollection<string> Disciplins { get; set; }
-        public Gymnast newGymnastInfo;   // !!!!!!!
-        
-
-        public RelayComand AddCommand { get; set; }
-
-        private void Add()
-        {
-            PersonalRatingsDiscpline newGymnast = new PersonalRatingsDiscpline();   // !!!!!!!
-            int indexNewGymnast = personalRatingsDiscplins.Count();                     // !!!!!!!
-            PersonalRatingsDiscplins.Insert(indexNewGymnast, newGymnast);           // !!!!!!!
-            newGymnast.FirstName = newGymnastInfo.FirstName;                         // !!!!!!!
-            newGymnast.LastName = newGymnastInfo.LastName;                          // !!!!!!!
-            newGymnast.Id = indexNewGymnast;                                        // !!!!!!!
-            OnPropertyChanged("PersonalRatingsDiscplins");                          // !!!!!!!
-        }
-
-        public Gymnast NewGymnastInfo // !!!!!!!
-        {
-            get
-            {
-                return newGymnastInfo;
-            }
-            set
-            {
-                newGymnastInfo = value;
-                OnPropertyChanged("NewGymnast");
-            }
-        }
-
-        public ObservableCollection<PersonalRatingsDiscpline> PersonalRatingsDiscplins
-        {
-            get
-            {
-                return personalRatingsDiscplins;
-            }
-            set
-            {
-                personalRatingsDiscplins = value;
-                OnPropertyChanged("PersonalRatingsDiscplins");
-            }
-        }
-        
-        public string SelectedDiscipline 
-        {
-            get 
-            { 
-                return _selectedDiscipline;
-            }
-            set
-            {
-                _selectedDiscipline = value;
-                ChangeDiscipline();
-                OnPropertyChanged("SelectedDiscipline");
-            }
-        }
+        public ObservableCollection<PersonalRatingsDiscpline> _personalRatingsDiscplins;
+        public Gymnast _newGymnastInfo;
+        public PersonalRatingsDiscpline _selectedPersonalRatingsDiscpline;
+        public Repository _repository;
 
         public ViewModel()
         {
-            Repository repository = new Repository();
-            _gymnasts = repository.GetGymnasts();
-            _ratings = repository.GetDisciplineRatings();
-            _allAroundRatings = repository.GetAllAroundRatings();
-            newGymnastInfo = new Gymnast();   // !!
+            _repository = new Repository();
+            _gymnasts = _repository.GymnastsInitialization();
+            _ratings = _repository.DisciplineRatingsInitialization();
+            _allAroundRatings = _repository.GetAllAroundRatings();
+            _newGymnastInfo = new Gymnast();
 
             Disciplins = new ObservableCollection<string>
             {
@@ -95,51 +43,151 @@ namespace First_appl_MVVM.ViewModels
                 "Total"
             };
 
-            PersonalRatingsDiscplins = new ObservableCollection<PersonalRatingsDiscpline>
-            {
-                new PersonalRatingsDiscpline { FirstName = GetFirstName(_gymnasts, 1), LastName = GetName(_gymnasts, 1), Rating = 0, Id = 1, Discipline = "ratings"},
-                new PersonalRatingsDiscpline { FirstName = GetFirstName(_gymnasts, 2), LastName = GetName(_gymnasts, 2), Rating = 0, Id = 2, Discipline = "ratings"},
-                new PersonalRatingsDiscpline { FirstName = GetFirstName(_gymnasts, 3), LastName = GetName(_gymnasts, 3), Rating = 0, Id = 3, Discipline = "ratings"},
-                new PersonalRatingsDiscpline { FirstName = GetFirstName(_gymnasts, 4), LastName = GetName(_gymnasts, 4), Rating = 0, Id = 4, Discipline = "ratings"}
-            };
-
             AddCommand = new RelayComand(Add);
+            RemoveCommand = new RelayComand(Remove);
+        }
+
+        private void Add()
+        {
+            if(_newGymnastInfo.LastName == null || _newGymnastInfo.FirstName == null)
+            {
+                MessageBox.Show("Information about the gymnast has not been written. Please fill in!");
+            }
+            else
+            {
+                _repository.AddGymnast(_newGymnastInfo);
+                _newGymnastInfo = null;                     //как обнулять комбобокс
+                NewGymnastInfo = new Gymnast();             //как обнулять комбобокс
+                UpdateViewRatingDisciplines();
+            }
+        }
+
+        private void Remove()
+        {
+            if (_selectedPersonalRatingsDiscpline != null)
+            {
+                _repository.RemoveGymnast(_selectedPersonalRatingsDiscpline.Id);
+                UpdateViewRatingDisciplines();
+            }
+        }
+
+        public void UpdateViewRatingDisciplines()
+        {
+            List<Gymnast> gymnasts = _repository.Gymnasts;
+            ObservableCollection<PersonalRatingsDiscpline> newPersonalRatingsDiscplins = new ObservableCollection<PersonalRatingsDiscpline>();
+            foreach (Gymnast gymnast in gymnasts)
+            {
+                PersonalRatingsDiscpline personalRatingsDiscpline = new PersonalRatingsDiscpline
+                {
+                    FirstName = GetFirstName(gymnasts, gymnast.ID),
+                    LastName = GetLastName(gymnasts, gymnast.ID),
+                    Country = GetCountry(gymnasts, gymnast.ID),
+                    Rating = GetRating(gymnast.ID, _selectedDiscipline),
+                    Discipline = _selectedDiscipline.ToString(),
+                    Id = gymnast.ID
+                };
+                newPersonalRatingsDiscplins.Add(personalRatingsDiscpline);
+            }
+            PersonalRatingsDiscplins = newPersonalRatingsDiscplins;
+        }
+
+        public ObservableCollection<string> Disciplins { get; set; }
+        public RelayComand AddCommand { get; set; }
+        public RelayComand AddCommаand { get; set; }
+        public RelayComand RemoveCommand { get; set; }
+
+        public Gymnast NewGymnastInfo
+        {
+            get
+            {
+                return _newGymnastInfo;
+            }
+            set
+            {
+                _newGymnastInfo = value;
+                OnPropertyChanged("NewGymnastInfo");
+            }
+        }
+
+        public PersonalRatingsDiscpline SelectedPersonalRatingsDiscpline
+        {
+            get
+            {
+                return _selectedPersonalRatingsDiscpline;
+            }
+            set
+            {
+                _selectedPersonalRatingsDiscpline = value;
+                //PersonalRatingsDiscpline repositoryRatingGymnast = FindGymnastInPerRatDis(_selectedPersonalRatingsDiscpline.Id);
+                //if (_selectedPersonalRatingsDiscpline.Rating != repositoryRatingGymnast.Rating)
+                //{
+                    ChangeRating(_selectedPersonalRatingsDiscpline.Id, _selectedDiscipline, _selectedPersonalRatingsDiscpline.Rating);
+                //}
+                OnPropertyChanged("SelectedPersonalRatingsDiscpline");
+            }
+        }
+
+        public ObservableCollection<PersonalRatingsDiscpline> PersonalRatingsDiscplins
+        {
+            get
+            {
+                return _personalRatingsDiscplins;
+            }
+            set
+            {
+                _personalRatingsDiscplins = value;
+                OnPropertyChanged("PersonalRatingsDiscplins");
+            }
+        }
+
+        public string SelectedDiscipline
+        {
+            get
+            {
+                return _selectedDiscipline;
+            }
+            set
+            {
+                _selectedDiscipline = value;
+                UpdateViewRatingDisciplines();
+                OnPropertyChanged("SelectedDiscipline");
+            }
         }
 
         public string GetFirstName(List<Gymnast> gymnasts, int id)
         {
             string firstName = null;
-            foreach(Gymnast gymnast in gymnasts)
+            foreach (Gymnast gymnast in gymnasts)
             {
-                if(gymnast.ID == id)
+                if (gymnast.ID == id)
                 {
-                    firstName = gymnast.LastName; 
+                    firstName = gymnast.LastName;
                 }
             }
             return firstName;
         }
 
-        public string GetName(List<Gymnast> gymnasts, int id)
+        public string GetLastName(List<Gymnast> gymnasts, int id)
         {
-            string Name = null;
+            string name = null;
             foreach (Gymnast gymnast in gymnasts)
             {
                 if (gymnast.ID == id)
                 {
-                    Name = gymnast.FirstName;
+                    name = gymnast.FirstName;
                 }
             }
-            return Name;
+            return name;
         }
 
-        public double GetRating( int id, string inputDiscipline)
+        public double GetRating(int id, string inputDiscipline)
         {
             double rating = 0;
             if (inputDiscipline == "Total")
             {
-                foreach(AllAroundRating allAroundRating in _allAroundRatings)
+                foreach (AllAroundRating allAroundRating in _allAroundRatings)
                 {
-                    if(allAroundRating.GymnastId == id)
+                    if (allAroundRating.GymnastId == id)
                     {
                         rating = allAroundRating.AllAroundRatig;
                     }
@@ -160,16 +208,45 @@ namespace First_appl_MVVM.ViewModels
             }
             return rating;
         }
-        public void ChangeDiscipline()
+
+        public string GetCountry(List<Gymnast> gymnasts, int id)
         {
-            NewPersonalRatingsDiscplins  = new ObservableCollection<PersonalRatingsDiscpline>
+            string country = null;
+            foreach (Gymnast gymnast in gymnasts)
             {
-                new PersonalRatingsDiscpline { FirstName = GetFirstName(_gymnasts, 1), LastName = GetName(_gymnasts, 1), Rating = GetRating(1,_selectedDiscipline), Id = 1, Discipline = _selectedDiscipline.ToString()},
-                new PersonalRatingsDiscpline { FirstName = GetFirstName(_gymnasts, 2), LastName = GetName(_gymnasts, 2), Rating = GetRating(2,_selectedDiscipline), Id = 2, Discipline = _selectedDiscipline.ToString()},
-                new PersonalRatingsDiscpline { FirstName = GetFirstName(_gymnasts, 3), LastName = GetName(_gymnasts, 3), Rating = GetRating(3,_selectedDiscipline), Id = 3, Discipline = _selectedDiscipline.ToString()},
-                new PersonalRatingsDiscpline { FirstName = GetFirstName(_gymnasts, 4), LastName = GetName(_gymnasts, 4), Rating = GetRating(4,_selectedDiscipline), Id = 4, Discipline = _selectedDiscipline.ToString()}
-            };
-            PersonalRatingsDiscplins = NewPersonalRatingsDiscplins;
+                if (gymnast.ID == id)
+                {
+                    country = gymnast.Country;
+                }
+            }
+            return country;
+        }
+
+        //public PersonalRatingsDiscpline FindGymnastInPerRatDis(int Id)
+        //{
+        //    PersonalRatingsDiscpline correspondingGymnast = null;
+        //    foreach (PersonalRatingsDiscpline personalRatingsDiscpline in _personalRatingsDiscplins)
+        //    {
+        //        if (personalRatingsDiscpline.Id == Id)
+        //        {
+        //            correspondingGymnast = personalRatingsDiscpline;
+        //        }
+        //    }
+        //    return correspondingGymnast;
+        //}
+
+        public void ChangeRating(int Id, string discipline, double newRating)
+        {
+            foreach (Ratings rating in _repository.DisciplineRatings)
+            {
+                if (rating.Discipline.ToString() == discipline)
+                {
+                    if(rating.GymnastId == Id)
+                    {
+                        rating.Rating = newRating;
+                    }
+                }
+            }
         }
     }
 }

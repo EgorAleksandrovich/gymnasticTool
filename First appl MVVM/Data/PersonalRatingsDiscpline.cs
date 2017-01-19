@@ -8,10 +8,11 @@ namespace First_appl_MVVM.Data
 {
     public class PersonalRatingsDiscpline
     {
-        public string Discipline { get; set; }
-        public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string Country { get; set; }
+        public string Discipline { get; set; }
+        public int Id { get; set; }
         public double Rating { get; set; }
     }
 }

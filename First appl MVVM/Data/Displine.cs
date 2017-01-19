@@ -11,7 +11,7 @@ namespace First_appl_MVVM.Data
     public class Discipline
     {
         public DisciplineIs DisciplineEnum { get; set; }
-        public ImageSource ImageSource { get; set; }
+        public string Icon { get; set; }
 
         public string DisplayName
         {

@@ -3,15 +3,18 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:First_appl_MVVM"
         xmlns:viewModels="clr-namespace:First_appl_MVVM.ViewModels"
-        Title="MainWindow" Height="auto" Width="400">
+        xmlns:data="clr-namespace:First_appl_MVVM.Data"
+        Title="MainWindow" Height="auto" Width="400"
+        Name="is">
     <Window.DataContext>
         <viewModels:ViewModel/>
     </Window.DataContext>
     
     <Window.Resources>
         <CollectionViewSource x:Key="AllDisciplines" Source="{Binding Path=Disciplins}"/>
+        <BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />
     </Window.Resources>
-    
+
     <StackPanel>
 
         <ComboBox SelectedIndex="0" SelectedItem="{Binding SelectedDiscipline, Mode=TwoWay}" >
@@ -23,29 +26,33 @@
             </ComboBox.ItemsSource>
         </ComboBox>
 
-        <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding PersonalRatingsDiscplins}" SelectedItem="{Binding SelectedPersonalRatingsDiscpline}" HorizontalGridLinesBrush="DarkBlue">
+        <FrameworkElement x:Name="tableColumn" Visibility="{Binding VisibilityTable, Converter={StaticResource booleanToVisibilityConverter}}"/>
+        
+        <DataGrid AutoGenerateColumns="False"
+                  ItemsSource="{Binding PersonalRatingsDiscplins, UpdateSourceTrigger=PropertyChanged}" 
+                  SelectedItem="{Binding SelectedPersonalRatingsDiscpline, UpdateSourceTrigger=LostFocus}" 
+                  HorizontalGridLinesBrush="DarkBlue"
+                  CanUserAddRows="False">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Last name" Binding="{Binding LastName}" IsReadOnly="True"/>
-                <DataGridTextColumn Header="First name" Binding="{Binding FirstName}" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Country" Binding="{Binding Country}" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Ratings" Binding="{Binding Rating}"/>
+                <DataGridTextColumn 
+                    Header="Last name" 
+                    Binding="{Binding LastName}" 
+                    IsReadOnly="True"/>
+                <DataGridTextColumn 
+                    Header="First name" 
+                    Binding="{Binding FirstName}" 
+                    IsReadOnly="True"/>
+                <DataGridTextColumn 
+                    Header="Country" 
+                    Binding="{Binding Country}" 
+                    IsReadOnly="True"/>
+                <DataGridTextColumn 
+                    Header="Ratings" 
+                    Binding="{Binding Rating, Mode=TwoWay}" 
+                    Width="*"
+                    Visibility="{Binding Source={x:Reference tableColumn}, Path=Visibility}"/>
             </DataGrid.Columns>
         </DataGrid>
-        
-        <!--<ListView ItemsSource="{Binding PersonalRatingsDiscplins}" SelectedItem="{Binding SelectedPersonalRatingsDiscpline}" Height="auto" MaxHeight="110">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Firstname" Width="Auto" 
-                  DisplayMemberBinding="{Binding FirstName}" >
-                    </GridViewColumn>
-                    <GridViewColumn DisplayMemberBinding="{Binding LastName}" 
-                  Header="Lastname" Width="auto"/>
-                    <GridViewColumn DisplayMemberBinding="{Binding Country}" 
-                  Header="Country" Width="auto"/>
-                    <GridViewColumn Header="Ratings" DisplayMemberBinding="{Binding Rating}" Width="auto"/>
-                </GridView>
-            </ListView.View>
-        </ListView>-->
         
         <Grid Margin="10,10,10,0">
             <Grid.RowDefinitions>
@@ -58,8 +65,19 @@
                 <ColumnDefinition Width="auto"></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <Button CommandParameter="{Binding PersonalRatingsDiscplins}" Command="{Binding RemoveCommand}" Width="auto" Height="auto" Grid.Column="0" Margin="10" Content="Delete gymnast"/>
-            <Button Command="{Binding AddCommand}" Width="auto" Grid.Column="0" Grid.Row="2" Height="auto" HorizontalAlignment="Center" Content="Add gymnast"/>
+            <Button CommandParameter="{Binding PersonalRatingsDiscplins}" 
+                    Command="{Binding RemoveCommand}" 
+                    Width="auto" Height="auto" 
+                    Grid.Column="0" 
+                    Margin="10" 
+                    Content="Delete gymnast"/>
+            <Button Command="{Binding AddCommand}" 
+                    Width="auto" 
+                    Grid.Column="0" 
+                    Grid.Row="2" 
+                    Height="auto" 
+                    HorizontalAlignment="Center" 
+                    Content="Add gymnast"/>
             <StackPanel Grid.Row="1" Grid.ColumnSpan="3" Background="LightGray" Margin="10" DataContext="{Binding NewGymnastInfo}">
                 <TextBlock  Text="Add new gymnast" Margin="20,5" Foreground="Red" FontSize="15" HorizontalAlignment="Center"/>
                 <TextBlock Text="Firstname" Margin="10,0,0,0"/>

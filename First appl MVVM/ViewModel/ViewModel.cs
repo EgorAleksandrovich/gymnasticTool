@@ -9,6 +9,7 @@ using System.Collections.ObjectModel;
 using First_appl_MVVM.Data;
 using First_appl_MVVM.Command;
 using System.Windows;
+using System.Windows.Controls;
 
 
 namespace First_appl_MVVM.ViewModels
@@ -19,10 +20,12 @@ namespace First_appl_MVVM.ViewModels
         private List<Gymnast> _gymnasts;
         private List<Ratings> _ratings;
         private List<AllAroundRating> _allAroundRatings;
-        public ObservableCollection<PersonalRatingsDiscpline> _personalRatingsDiscplins;
-        public Gymnast _newGymnastInfo;
-        public PersonalRatingsDiscpline _selectedPersonalRatingsDiscpline;
-        public Repository _repository;
+        private ObservableCollection<PersonalRatingsDiscpline> _personalRatingsDiscplins;
+        private Gymnast _newGymnastInfo;
+        private PersonalRatingsDiscpline _selectedPersonalRatingsDiscpline;
+        private Repository _repository;
+        private bool _visibilityTable;
+
 
         public ViewModel()
         {
@@ -49,15 +52,14 @@ namespace First_appl_MVVM.ViewModels
 
         private void Add()
         {
-            if(_newGymnastInfo.LastName == null || _newGymnastInfo.FirstName == null)
+            if (_newGymnastInfo.LastName == null || _newGymnastInfo.FirstName == null)
             {
                 MessageBox.Show("Information about the gymnast has not been written. Please fill in!");
             }
             else
             {
                 _repository.AddGymnast(_newGymnastInfo);
-                _newGymnastInfo = null;                     //как обнулять комбобокс
-                NewGymnastInfo = new Gymnast();             //как обнулять комбобокс
+                NewGymnastInfo = new Gymnast();
                 UpdateViewRatingDisciplines();
             }
         }
@@ -96,6 +98,19 @@ namespace First_appl_MVVM.ViewModels
         public RelayComand AddCommаand { get; set; }
         public RelayComand RemoveCommand { get; set; }
 
+        public bool VisibilityTable
+        {
+            get
+            {
+                return _visibilityTable;
+            }
+            set
+            {
+                _visibilityTable = value;
+                OnPropertyChanged("VisibilityTable");
+            }
+        }
+
         public Gymnast NewGymnastInfo
         {
             get
@@ -118,11 +133,6 @@ namespace First_appl_MVVM.ViewModels
             set
             {
                 _selectedPersonalRatingsDiscpline = value;
-                //PersonalRatingsDiscpline repositoryRatingGymnast = FindGymnastInPerRatDis(_selectedPersonalRatingsDiscpline.Id);
-                //if (_selectedPersonalRatingsDiscpline.Rating != repositoryRatingGymnast.Rating)
-                //{
-                    ChangeRating(_selectedPersonalRatingsDiscpline.Id, _selectedDiscipline, _selectedPersonalRatingsDiscpline.Rating);
-                //}
                 OnPropertyChanged("SelectedPersonalRatingsDiscpline");
             }
         }
@@ -149,6 +159,10 @@ namespace First_appl_MVVM.ViewModels
             set
             {
                 _selectedDiscipline = value;
+                if (_selectedDiscipline != "System.Windows.Controls.ListBoxItem: Choose a discipline")
+                {
+                    VisibilityTable = true;
+                }
                 UpdateViewRatingDisciplines();
                 OnPropertyChanged("SelectedDiscipline");
             }
@@ -241,7 +255,7 @@ namespace First_appl_MVVM.ViewModels
             {
                 if (rating.Discipline.ToString() == discipline)
                 {
-                    if(rating.GymnastId == Id)
+                    if (rating.GymnastId == Id)
                     {
                         rating.Rating = newRating;
                     }

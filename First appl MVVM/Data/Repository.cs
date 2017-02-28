@@ -4,102 +4,119 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
+using System.Configuration;
+using System.Data.SqlClient;
+using System.Data;
 
 namespace First_appl_MVVM.Data
 {
     public class Repository
     {
-        public List<Gymnast> Gymnasts { get; set; }
-        public List<Ratings> DisciplineRatings { get; set; }
-        public List<AllAroundRating> AllAroundRatings { get; set; }
+        List<Gymnast> gymnasts = new List<Gymnast>();
+        List<Rating> disciplineRatings = new List<Rating>();
+        string _connectionString = "Server=.\\SQLEXPRESS;Database=Mydatabase;Integrated security=true";
 
-        public List<Gymnast> GymnastsInitialization()
+        public List<Gymnast> GetGymnasts()
         {
-            Gymnasts = new List<Gymnast>
+            SqlConnection myConection = new SqlConnection(_connectionString);
+            myConection.Open();
+            SqlCommand cmd = new SqlCommand("SELECT Id, FirstName, LastName, Country FROM [dbo].[Gymnasts]", myConection);
+            SqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
             {
-                new Gymnast { ID = 1, FirstName="Egor", LastName="Bolshakov", Country="Norway" },
-                new Gymnast { ID = 2, FirstName="Yuri", LastName="Dorokhov", Country="Ukraine" },
-                new Gymnast { ID = 3, FirstName="Stas", LastName="Stefanovski", Country="Germani" },
-                new Gymnast { ID = 4, FirstName="Roman", LastName="Palkin", Country="USA" }
-            };
-            return Gymnasts;
+                Gymnast gymnast = new Gymnast()
+                {
+                    ID = Convert.ToInt32(reader["Id"]),
+                    LastName = reader["LastName"].ToString(),
+                    FirstName = reader["FirstName"].ToString(),
+                    Country = reader["Country"].ToString()
+                };
+                gymnasts.Add(gymnast);
+            }
+            reader.Close();
+            myConection.Close();
+            return gymnasts;
         }
 
-        public List<Ratings> DisciplineRatingsInitialization()
+        public List<Rating> GetDisciplineRatings()
         {
-            DisciplineRatings = new List<Ratings>
+            SqlConnection myConection = new SqlConnection(_connectionString);
+            myConection.Open();
+            SqlCommand cmd = new SqlCommand("SELECT GymnastId, Rating, Discipline, Id FROM [dbo].[Ratings]", myConection);
+            SqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
             {
-                new Ratings { GymnastId = 1, Discipline = DisciplineIs.FloorExercise, DateOfCompetition = new DateTime(2016,12,09), Rating = 16.1 },
-                new Ratings { GymnastId = 2, Discipline = DisciplineIs.FloorExercise, DateOfCompetition = new DateTime(2016,12,09), Rating = 15.7 },
-                new Ratings { GymnastId = 3, Discipline = DisciplineIs.FloorExercise , DateOfCompetition = new DateTime(2016,12,09), Rating = 14.4 },
-                new Ratings { GymnastId = 4, Discipline = DisciplineIs.FloorExercise, DateOfCompetition = new DateTime(2016,12,09), Rating = 15.5 },
-
-                new Ratings { GymnastId = 1, Discipline = DisciplineIs.PommelHorse, DateOfCompetition = new DateTime(2016,12,09), Rating = 15.1 },
-                new Ratings { GymnastId = 2, Discipline = DisciplineIs.PommelHorse, DateOfCompetition = new DateTime(2016,12,09), Rating = 14.7 },
-                new Ratings { GymnastId = 3, Discipline = DisciplineIs.PommelHorse, DateOfCompetition = new DateTime(2016,12,09), Rating = 15.4 },
-                new Ratings { GymnastId = 4, Discipline = DisciplineIs.PommelHorse, DateOfCompetition = new DateTime(2016,12,09), Rating = 14.5 },
-
-                new Ratings { GymnastId = 1, Discipline = DisciplineIs.StillRings, DateOfCompetition = new DateTime(2016,12,09), Rating = 14 },
-                new Ratings { GymnastId = 2, Discipline = DisciplineIs.StillRings, DateOfCompetition = new DateTime(2016,12,09), Rating = 13.7 },
-                new Ratings { GymnastId = 3, Discipline = DisciplineIs.StillRings, DateOfCompetition = new DateTime(2016,12,09), Rating = 14.8 },
-                new Ratings { GymnastId = 4, Discipline = DisciplineIs.StillRings, DateOfCompetition = new DateTime(2016,12,09), Rating = 15.2 },
-
-                new Ratings { GymnastId = 1, Discipline = DisciplineIs.Vault, DateOfCompetition = new DateTime(2016,12,09), Rating = 15.1 },
-                new Ratings { GymnastId = 2, Discipline = DisciplineIs.Vault, DateOfCompetition = new DateTime(2016,12,09), Rating = 16.7 },
-                new Ratings { GymnastId = 3, Discipline = DisciplineIs.Vault, DateOfCompetition = new DateTime(2016,12,09), Rating = 15.4 },
-                new Ratings { GymnastId = 4, Discipline = DisciplineIs.Vault, DateOfCompetition = new DateTime(2016,12,09), Rating = 14.5 },
-
-                new Ratings { GymnastId = 1, Discipline = DisciplineIs.ParallelBars, DateOfCompetition = new DateTime(2016,12,09), Rating = 15.7 },
-                new Ratings { GymnastId = 2, Discipline = DisciplineIs.ParallelBars, DateOfCompetition = new DateTime(2016,12,09), Rating = 14.2 },
-                new Ratings { GymnastId = 3, Discipline = DisciplineIs.ParallelBars, DateOfCompetition = new DateTime(2016,12,09), Rating = 15.1 },
-                new Ratings { GymnastId = 4, Discipline = DisciplineIs.ParallelBars, DateOfCompetition = new DateTime(2016,12,09), Rating = 13.9 },
-
-                new Ratings { GymnastId = 1, Discipline = DisciplineIs.HighBar, DateOfCompetition = new DateTime(2016,12,09), Rating = 13.9 },
-                new Ratings { GymnastId = 2, Discipline = DisciplineIs.HighBar, DateOfCompetition = new DateTime(2016,12,09), Rating = 14.8 },
-                new Ratings { GymnastId = 3, Discipline = DisciplineIs.HighBar, DateOfCompetition = new DateTime(2016,12,09), Rating = 15.3 },
-                new Ratings { GymnastId = 4, Discipline = DisciplineIs.HighBar, DateOfCompetition = new DateTime(2016,12,09), Rating = 15.0 }
-            };
-            return DisciplineRatings;
-        }
-        public List<AllAroundRating> GetAllAroundRatings()
-        {
-            AllAroundRatings = new List<AllAroundRating>
-            {
-                new AllAroundRating { DateOfCompetition = new DateTime(2016,12,09), GymnastId = 1, AllAroundRatig = GetAllAroundRatingGymnast(1, DisciplineRatings)},
-                new AllAroundRating { DateOfCompetition = new DateTime(2016,12,09), GymnastId = 2, AllAroundRatig = GetAllAroundRatingGymnast(2, DisciplineRatings)},
-                new AllAroundRating { DateOfCompetition = new DateTime(2016,12,09), GymnastId = 3, AllAroundRatig = GetAllAroundRatingGymnast(3, DisciplineRatings)},
-                new AllAroundRating { DateOfCompetition = new DateTime(2016,12,09), GymnastId = 4, AllAroundRatig = GetAllAroundRatingGymnast(4, DisciplineRatings)}
-            };
-            return AllAroundRatings;
+                Rating rating = new Rating()
+                {
+                    GymnastId = Convert.ToInt32(reader["GymnastId"]),
+                    Value = Convert.ToDouble(reader["Rating"]),
+                    Discipline = (DisciplineIs)Enum.Parse(typeof(DisciplineIs), reader["Discipline"].ToString()),
+                    Id = Convert.ToInt32(reader["Id"])
+                };
+                disciplineRatings.Add(rating);
+            }
+            reader.Close();
+            myConection.Close();
+            return disciplineRatings;
         }
 
-        public void AddGymnast(Gymnast gymnastInfo)
+        public int AddGymnast(Gymnast gymnastInfo)
         {
-            Gymnast newGymnast = new Gymnast();
-            int indexNewGymnast = Gymnasts.Count();
-            Gymnasts.Insert(indexNewGymnast, newGymnast);
-            newGymnast.FirstName = gymnastInfo.FirstName;
-            newGymnast.LastName = gymnastInfo.LastName;
-            newGymnast.Country = gymnastInfo.Country;
-            newGymnast.ID = indexNewGymnast + 1;
+            using (SqlConnection myConection = new SqlConnection(_connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("INSERT INTO [dbo].[Gymnasts] (LastName, FirstName, Country) output INSERTED.Id VALUES (@LastName, @FirstName, @Country)", myConection);
+                cmd.CommandType = CommandType.Text;
+                cmd.Connection = myConection;
+                cmd.Parameters.AddWithValue("@LastName", gymnastInfo.LastName);
+                cmd.Parameters.AddWithValue("@FirstName", gymnastInfo.FirstName);
+                cmd.Parameters.AddWithValue("@Country", gymnastInfo.Country);
+                myConection.Open();
+                int id = (int)cmd.ExecuteScalar();
+                return id;
+            }
+        }
+
+        public void SaveRatings(PersonalRatingsDiscpline personalRatingsDiscpline)
+        {
+            using (SqlConnection myConection = new SqlConnection(_connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("INSERT INTO [dbo].[Ratings] ( GymnastId, Rating, Discipline, Id) VALUES (@gymnastId, @rating, @discipline, @Id) ON DUPLICATE KEY UPDATE Rating = @Rating", myConection);
+                cmd.CommandType = CommandType.Text;
+                cmd.Connection = myConection;
+                cmd.Parameters.AddWithValue("@discipline", personalRatingsDiscpline.Discipline);
+                cmd.Parameters.AddWithValue("@gymnastId", personalRatingsDiscpline.Id);
+                cmd.Parameters.AddWithValue("@Rating", personalRatingsDiscpline.Rating);
+                cmd.Parameters.AddWithValue("@Id", personalRatingsDiscpline.IdRating);
+                myConection.Open();
+                cmd.ExecuteNonQuery();
+            }
+            personalRatingsDiscpline.IsUpdated = false;
         }
 
         public void RemoveGymnast(int removeId)
         {
-            Gymnasts.RemoveAt(removeId-1);
+            using (SqlConnection myConection = new SqlConnection(_connectionString))
+            {
+                myConection.Open();
+                using (SqlCommand command = new SqlCommand("DELETE FROM [dbo].[Gymnasts] WHERE Id=@id", myConection))
+                {
+                    command.Parameters.AddWithValue("@id", removeId);
+                    command.ExecuteNonQuery();
+                }
+            }
         }
 
-         public double GetAllAroundRatingGymnast(int gymnastId, List<Ratings> disciplineRatings)
+        public void RemoveDisciplineRatings(int removeId)
         {
-             double allAroundRating = 0;
-             foreach(Ratings rating in disciplineRatings)
-             {
-                 if (rating.GymnastId == gymnastId)
-                 {
-                     allAroundRating += rating.Rating;
-                 }
-             }
-             return allAroundRating;
+            using (SqlConnection myConection = new SqlConnection(_connectionString))
+            {
+                myConection.Open();
+                using (SqlCommand command = new SqlCommand("DELETE FROM [dbo].[Ratings] WHERE GymnastId=@removeId", myConection))
+                {
+                    command.Parameters.AddWithValue("@removeId", removeId);
+                    command.ExecuteNonQuery();
+                }
+            }
         }
     }
 }

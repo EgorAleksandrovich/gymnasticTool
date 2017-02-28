@@ -23,6 +23,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -60,6 +61,7 @@
     <Compile Include="Data\PersonalRatingsDiscpline.cs" />
     <Compile Include="Data\Ratings.cs" />
     <Compile Include="Data\Repository.cs" />
+    <Compile Include="Data\ResultTable.cs" />
     <Compile Include="ViewModel\ViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Page Include="MainWindow.xaml">
@@ -102,18 +104,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Data\images\flor.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Data\images\hors.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Data\images\hbar.png" />
-    <Resource Include="Data\images\pbar.png" />
-    <Resource Include="Data\images\rings.png" />
-    <Resource Include="Data\images\vault.png" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

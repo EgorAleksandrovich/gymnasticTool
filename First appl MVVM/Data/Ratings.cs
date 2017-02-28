@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 
 namespace First_appl_MVVM.Data
 {
-    public class Ratings
+    public class Rating
     {
         public DisciplineIs Discipline { get; set; }
-        public double Rating { get; set; }
+        public double Value { get; set; }
         public int GymnastId { get; set; }
-        public DateTime DateOfCompetition { get; set; }
+        public int IdCompetition { get; set; }
+        public int Id { get; set; }
     }
 }

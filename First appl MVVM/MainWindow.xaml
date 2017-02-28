@@ -4,8 +4,8 @@
         xmlns:local="clr-namespace:First_appl_MVVM"
         xmlns:viewModels="clr-namespace:First_appl_MVVM.ViewModels"
         xmlns:data="clr-namespace:First_appl_MVVM.Data"
-        Title="MainWindow" Height="auto" Width="400"
-        Name="is">
+        Title="MainWindow" Height="auto" Width="500">
+    
     <Window.DataContext>
         <viewModels:ViewModel/>
     </Window.DataContext>
@@ -15,70 +15,109 @@
         <BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />
     </Window.Resources>
 
-    <StackPanel>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
 
-        <ComboBox SelectedIndex="0" SelectedItem="{Binding SelectedDiscipline, Mode=TwoWay}" >
-            <ComboBox.ItemsSource>
-                <CompositeCollection>
-                    <ListBoxItem>Choose a discipline</ListBoxItem>
-                    <CollectionContainer Collection="{Binding Source={StaticResource AllDisciplines}}" />
-                </CompositeCollection>
-            </ComboBox.ItemsSource>
-        </ComboBox>
+        <Menu Grid.Row="0" Grid.ColumnSpan="2" Height="25" VerticalAlignment="Top">
+            <MenuItem Header="Competition">
+                <MenuItem Header="New competition"></MenuItem>
+                <MenuItem Header="Show competition">
+                    <ListBox ItemsSource="{Binding Table}" DisplayMemberPath="CompetitionName">
+                    </ListBox>
+                </MenuItem>
+            </MenuItem>
+        </Menu>
 
-        <FrameworkElement x:Name="tableColumn" Visibility="{Binding VisibilityTable, Converter={StaticResource booleanToVisibilityConverter}}"/>
-        
-        <DataGrid AutoGenerateColumns="False"
-                  ItemsSource="{Binding PersonalRatingsDiscplins, UpdateSourceTrigger=PropertyChanged}" 
-                  SelectedItem="{Binding SelectedPersonalRatingsDiscpline, UpdateSourceTrigger=LostFocus}" 
-                  HorizontalGridLinesBrush="DarkBlue"
-                  CanUserAddRows="False">
-            <DataGrid.Columns>
-                <DataGridTextColumn 
-                    Header="Last name" 
-                    Binding="{Binding LastName}" 
-                    IsReadOnly="True"/>
-                <DataGridTextColumn 
-                    Header="First name" 
-                    Binding="{Binding FirstName}" 
-                    IsReadOnly="True"/>
-                <DataGridTextColumn 
-                    Header="Country" 
-                    Binding="{Binding Country}" 
-                    IsReadOnly="True"/>
-                <DataGridTextColumn 
-                    Header="Ratings" 
-                    Binding="{Binding Rating, Mode=TwoWay}" 
-                    Width="*"
-                    Visibility="{Binding Source={x:Reference tableColumn}, Path=Visibility}"/>
-            </DataGrid.Columns>
-        </DataGrid>
-        
-        <Grid Margin="10,10,10,0">
+        <Grid Grid.Column="0" Grid.Row="1">
+            
             <Grid.RowDefinitions>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
             </Grid.RowDefinitions>
+            
+            <ComboBox SelectedIndex="0" 
+                      SelectedItem="{Binding SelectedDiscipline, Mode=TwoWay}" 
+                      Grid.Row="0"
+                      Margin="5,5,5,5"
+                      Background="YellowGreen">
+                <ComboBox.ItemsSource>
+                    <CompositeCollection>
+                        <ListBoxItem>Choose a discipline</ListBoxItem>
+                        <CollectionContainer Collection="{Binding Source={StaticResource AllDisciplines}}" />
+                    </CompositeCollection>
+                </ComboBox.ItemsSource>
+            </ComboBox>
+
+            <FrameworkElement x:Name="tableColumn" Visibility="{Binding VisibilityTable, Converter={StaticResource booleanToVisibilityConverter}}"/>
+
+            <DataGrid AutoGenerateColumns="False"
+                      ItemsSource="{Binding PersonalRatingsDiscplins, UpdateSourceTrigger=PropertyChanged}" 
+                      SelectedItem="{Binding SelectedPersonalRatingsDiscpline, UpdateSourceTrigger=LostFocus}" 
+                      HorizontalGridLinesBrush="DarkBlue"
+                      CanUserAddRows="True"
+                      Grid.Row="1"
+                      Height="auto">
+                <DataGrid.Columns>
+                    <DataGridTextColumn 
+                        Header="Last name" 
+                        Binding="{Binding LastName}" 
+                        IsReadOnly="True"/>
+                    <DataGridTextColumn 
+                        Header="First name" 
+                        Binding="{Binding FirstName}" 
+                        IsReadOnly="True"/>
+                    <DataGridTextColumn 
+                        Header="Country" 
+                        Binding="{Binding Country}" 
+                        IsReadOnly="True"/>
+                    <DataGridTextColumn 
+                        Header="Ratings" 
+                        Binding="{Binding Rating, Mode=TwoWay}" 
+                        Width="*"
+                        Visibility="{Binding Source={x:Reference tableColumn}, Path=Visibility}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <Button CommandParameter="{Binding PersonalRatingsDiscplins}" 
+                    Command="{Binding RemoveCommand}"
+                    HorizontalAlignment="Left"
+                    Grid.Row="2"
+                    Margin="10,10,0,20"
+                    Content="Delete gymnast"/>
+
+            <Button Command="{Binding SaveRatingsCommand}"
+                    HorizontalAlignment="Center"
+                    Grid.Row="2"
+                    Margin="10,10,0,20"
+                    Content="Save"/>
+        </Grid>
+        
+        <Grid Grid.Column="1" Grid.Row="1">
+            
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto"></ColumnDefinition>
-                <ColumnDefinition Width="auto"></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <Button CommandParameter="{Binding PersonalRatingsDiscplins}" 
-                    Command="{Binding RemoveCommand}" 
-                    Width="auto" Height="auto" 
-                    Grid.Column="0" 
-                    Margin="10" 
-                    Content="Delete gymnast"/>
-            <Button Command="{Binding AddCommand}" 
-                    Width="auto" 
-                    Grid.Column="0" 
-                    Grid.Row="2" 
-                    Height="auto" 
-                    HorizontalAlignment="Center" 
+
+            <Button Command="{Binding AddCommand}"
+                    Margin="10,0"
+                    Grid.Row="1"
+                    HorizontalAlignment="Left" 
                     Content="Add gymnast"/>
-            <StackPanel Grid.Row="1" Grid.ColumnSpan="3" Background="LightGray" Margin="10" DataContext="{Binding NewGymnastInfo}">
+            <StackPanel Background="LightGray" Margin="10" DataContext="{Binding NewGymnastInfo}" Height="auto">
                 <TextBlock  Text="Add new gymnast" Margin="20,5" Foreground="Red" FontSize="15" HorizontalAlignment="Center"/>
                 <TextBlock Text="Firstname" Margin="10,0,0,0"/>
                 <TextBox Text="{Binding FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="10,0,10,0"/>
@@ -88,5 +127,5 @@
                 <TextBox Text="{Binding Country, UpdateSourceTrigger=PropertyChanged}" Margin="10,0,10,15"/>
             </StackPanel>
         </Grid>
-    </StackPanel>
+    </Grid>
 </Window>

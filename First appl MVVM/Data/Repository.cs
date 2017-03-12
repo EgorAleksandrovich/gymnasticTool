@@ -12,12 +12,13 @@ namespace First_appl_MVVM.Data
 {
     public class Repository
     {
-        List<Gymnast> gymnasts = new List<Gymnast>();
-        List<Rating> disciplineRatings = new List<Rating>();
+        List<Gymnast> gymnasts;
+        List<Rating> disciplineRatings;
         string _connectionString = "Server=.\\SQLEXPRESS;Database=Mydatabase;Integrated security=true";
 
         public List<Gymnast> GetGymnasts()
         {
+            gymnasts = new List<Gymnast>();
             SqlConnection myConection = new SqlConnection(_connectionString);
             myConection.Open();
             SqlCommand cmd = new SqlCommand("SELECT Id, FirstName, LastName, Country FROM [dbo].[Gymnasts]", myConection);
@@ -40,6 +41,7 @@ namespace First_appl_MVVM.Data
 
         public List<Rating> GetDisciplineRatings()
         {
+            disciplineRatings = new List<Rating>();
             SqlConnection myConection = new SqlConnection(_connectionString);
             myConection.Open();
             SqlCommand cmd = new SqlCommand("SELECT GymnastId, Rating, Discipline, Id FROM [dbo].[Ratings]", myConection);
@@ -60,19 +62,18 @@ namespace First_appl_MVVM.Data
             return disciplineRatings;
         }
 
-        public int AddGymnast(Gymnast gymnastInfo)
+        public void AddGymnast(Gymnast gymnastInfo)
         {
             using (SqlConnection myConection = new SqlConnection(_connectionString))
             {
-                SqlCommand cmd = new SqlCommand("INSERT INTO [dbo].[Gymnasts] (LastName, FirstName, Country) output INSERTED.Id VALUES (@LastName, @FirstName, @Country)", myConection);
+                SqlCommand cmd = new SqlCommand("INSERT INTO [dbo].[Gymnasts] (LastName, FirstName, Country)  VALUES (@LastName, @FirstName, @Country)", myConection);
                 cmd.CommandType = CommandType.Text;
                 cmd.Connection = myConection;
                 cmd.Parameters.AddWithValue("@LastName", gymnastInfo.LastName);
                 cmd.Parameters.AddWithValue("@FirstName", gymnastInfo.FirstName);
                 cmd.Parameters.AddWithValue("@Country", gymnastInfo.Country);
                 myConection.Open();
-                int id = (int)cmd.ExecuteScalar();
-                return id;
+                cmd.ExecuteNonQuery();
             }
         }
 
@@ -80,12 +81,12 @@ namespace First_appl_MVVM.Data
         {
             using (SqlConnection myConection = new SqlConnection(_connectionString))
             {
-                SqlCommand cmd = new SqlCommand("INSERT INTO [dbo].[Ratings] ( GymnastId, Rating, Discipline, Id) VALUES (@gymnastId, @rating, @discipline, @Id) ON DUPLICATE KEY UPDATE Rating = @Rating", myConection);
+                SqlCommand cmd = new SqlCommand("MERGE [dbo].[Ratings] WITH (SERIALIZABLE) AS R USING (VALUES (@Id, @rating)) AS U (Id, Rating) ON U.Id = R.Id WHEN MATCHED THEN UPDATE SET R.Rating = U.Rating WHEN NOT MATCHED THEN INSERT (GymnastId, Rating, Discipline) VALUES (@gymnastId, @rating, @discipline);", myConection);
                 cmd.CommandType = CommandType.Text;
                 cmd.Connection = myConection;
                 cmd.Parameters.AddWithValue("@discipline", personalRatingsDiscpline.Discipline);
                 cmd.Parameters.AddWithValue("@gymnastId", personalRatingsDiscpline.Id);
-                cmd.Parameters.AddWithValue("@Rating", personalRatingsDiscpline.Rating);
+                cmd.Parameters.AddWithValue("@rating", personalRatingsDiscpline.Rating);
                 cmd.Parameters.AddWithValue("@Id", personalRatingsDiscpline.IdRating);
                 myConection.Open();
                 cmd.ExecuteNonQuery();

@@ -1,6 +1,7 @@
 ﻿<Window x:Class="First_appl_MVVM.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:local="clr-namespace:First_appl_MVVM"
         xmlns:viewModels="clr-namespace:First_appl_MVVM.ViewModels"
         xmlns:data="clr-namespace:First_appl_MVVM.Data"
@@ -49,9 +50,15 @@
                       Grid.Row="0"
                       Margin="5,5,5,5"
                       Background="YellowGreen">
+                
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged">
+                        <i:InvokeCommandAction Command="{Binding UpdateViewRatingsCommand}" CommandParameter="{Binding ElementName=SelectBox, Path=Text}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+
                 <ComboBox.ItemsSource>
                     <CompositeCollection>
-                        <ListBoxItem>Choose a discipline</ListBoxItem>
                         <CollectionContainer Collection="{Binding Source={StaticResource AllDisciplines}}" />
                     </CompositeCollection>
                 </ComboBox.ItemsSource>

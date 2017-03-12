@@ -28,3 +28,4 @@ C:\Users\Egorka\Documents\Visual Studio 2013\Projects\gymnasticTool\gymnasticToo
 C:\Users\Egorka\Documents\Visual Studio 2013\Projects\gymnasticTool\gymnasticTool\First appl MVVM\obj\Debug\First appl MVVM.g.resources
 C:\Users\Egorka\Documents\Visual Studio 2013\Projects\gymnasticTool\gymnasticTool\First appl MVVM\obj\Debug\First_appl_MVVM.Properties.Resources.resources
 C:\Users\Egorka\Documents\Visual Studio 2013\Projects\gymnasticTool\gymnasticTool\First appl MVVM\obj\Debug\First appl MVVM.csproj.GenerateResource.Cache
+C:\Users\Egorka\Documents\Visual Studio 2013\Projects\gymnasticTool\gymnasticTool\First appl MVVM\bin\Debug\System.Windows.Interactivity.dll

@@ -30,7 +30,12 @@
             <MenuItem Header="Competition">
                 <MenuItem Header="New competition"></MenuItem>
                 <MenuItem Header="Show competition">
-                    <ListBox ItemsSource="{Binding Table}" DisplayMemberPath="CompetitionName">
+                    <ListBox x:Name="Competitions" ItemsSource="{Binding Competitions}" DisplayMemberPath="CompetitionName" SelectedItem="{Binding SelectedCompetition}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="SelectionChanged">
+                                <i:InvokeCommandAction Command="{Binding GetCompetitorsCommand}" CommandParameter="{Binding ElementName=Competitions}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
                     </ListBox>
                 </MenuItem>
             </MenuItem>
@@ -66,34 +71,45 @@
 
             <FrameworkElement x:Name="tableColumn" Visibility="{Binding VisibilityTable, Converter={StaticResource booleanToVisibilityConverter}}"/>
 
-            <DataGrid AutoGenerateColumns="False"
+            <StackPanel Grid.Row="1">
+
+                <ContentControl Content="{Binding SelectedCompetition}">
+                    <ContentControl.ContentTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding CompetitionName}" HorizontalAlignment="Center" Margin="0,10,0,0"/>
+                        </DataTemplate>
+                    </ContentControl.ContentTemplate>
+                </ContentControl>
+
+                <DataGrid AutoGenerateColumns="False"
                       ItemsSource="{Binding PersonalRatingsDiscplins, UpdateSourceTrigger=PropertyChanged}" 
                       SelectedItem="{Binding SelectedPersonalRatingsDiscpline, UpdateSourceTrigger=LostFocus}" 
                       HorizontalGridLinesBrush="DarkBlue"
                       CanUserAddRows="True"
                       Grid.Row="1"
                       Height="auto">
-                <DataGrid.Columns>
-                    <DataGridTextColumn 
+                    <DataGrid.Columns>
+                        <DataGridTextColumn 
                         Header="Last name" 
                         Binding="{Binding LastName}" 
                         IsReadOnly="True"/>
-                    <DataGridTextColumn 
+                        <DataGridTextColumn 
                         Header="First name" 
                         Binding="{Binding FirstName}" 
                         IsReadOnly="True"/>
-                    <DataGridTextColumn 
+                        <DataGridTextColumn 
                         Header="Country" 
                         Binding="{Binding Country}" 
                         IsReadOnly="True"/>
-                    <DataGridTextColumn 
+                        <DataGridTextColumn 
                         Header="Ratings" 
                         Binding="{Binding Rating, Mode=TwoWay}" 
                         Width="*"
                         Visibility="{Binding Source={x:Reference tableColumn}, Path=Visibility}"/>
-                </DataGrid.Columns>
-            </DataGrid>
-
+                    </DataGrid.Columns>
+                </DataGrid>
+            </StackPanel>
+            
             <Button CommandParameter="{Binding PersonalRatingsDiscplins}" 
                     Command="{Binding RemoveCommand}"
                     HorizontalAlignment="Left"

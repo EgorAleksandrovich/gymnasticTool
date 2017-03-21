@@ -24,20 +24,18 @@ namespace First_appl_MVVM.ViewModels
         private PersonalRatingsDiscpline _selectedPersonalRatingsDiscpline;
         private Repository _repository;
         private bool _visibilityTable;
-        private ObservableCollection<ResultTable> _table;   // test stackpanel in menu
-
+        private ObservableCollection<Competition> _competitions;
+        private Competition _selectedCompetition;
+        private List<Competitor> _competitors;
 
         public ViewModel()
         {
-            _table = new ObservableCollection<ResultTable> { 
-                new ResultTable {CompetitionName = "Rola"},
-                new ResultTable { CompetitionName = "24 cup"}
-                };
             _repository = new Repository();
             _gymnasts = new List<Gymnast>();
             _ratings = new List<Rating>();
             _newGymnastInfo = new Gymnast();
-            UpdateViewRatings();
+            _competitors = new List<Competitor>();
+            _competitions = _repository.GetCompetitions();
 
             Disciplins = new ObservableCollection<string>
             {
@@ -55,6 +53,13 @@ namespace First_appl_MVVM.ViewModels
             RemoveCommand = new RelayComand(Remove);
             SaveRatingsCommand = new RelayComand(SaveRatings);
             UpdateViewRatingsCommand = new RelayComand(UpdateViewRatings);
+            GetCompetitorsCommand = new RelayComand(GetCompetitors);
+        }
+
+        private void GetCompetitors()
+        {
+            _competitors = _repository.GetCompetitors(_selectedCompetition.Id);
+            UpdateViewRatings();
         }
 
         private void Add()
@@ -65,7 +70,8 @@ namespace First_appl_MVVM.ViewModels
             }
             else
             {
-                _repository.AddGymnast(_newGymnastInfo);
+                int idNewGymnast =  _repository.AddGymnast(_newGymnastInfo);
+                _repository.AddCompetitor(_selectedCompetition.Id, idNewGymnast);
                 NewGymnastInfo = new Gymnast();         // обнуление текст бокса
                 UpdateViewRatings();
             }
@@ -94,11 +100,12 @@ namespace First_appl_MVVM.ViewModels
 
         public void UpdateViewRatings()
         {
-            if(_personalRatingsDiscplins != null)
+            if (_personalRatingsDiscplins != null)
             {
                 SaveRatings();
             }
-            _gymnasts = _repository.GetGymnasts();
+            _competitors = _repository.GetCompetitors(_selectedCompetition.Id);
+            _gymnasts = _repository.GetGymnasts(_competitors);
             _ratings = _repository.GetDisciplineRatings();
             ObservableCollection<PersonalRatingsDiscpline> newPersonalRatingsDiscplins = new ObservableCollection<PersonalRatingsDiscpline>();
             foreach (Gymnast gymnast in _gymnasts)
@@ -125,17 +132,31 @@ namespace First_appl_MVVM.ViewModels
         public RelayComand RemoveCommand { get; set; }
         public RelayComand SaveRatingsCommand { get; set; }
         public RelayComand UpdateViewRatingsCommand { get; set; }
+        public RelayComand GetCompetitorsCommand { get; set; }
 
-        public ObservableCollection<ResultTable> Table
+        public ObservableCollection<Competition> Competitions
         {
             get
             {
-                return _table;
+                return _competitions;
             }
             set
             {
-                _table = value;
-                OnPropertyChanged("Table");
+                _competitions = value;
+                OnPropertyChanged("Competition");
+            }
+        }
+
+        public Competition SelectedCompetition
+        {
+            get
+            {
+                return _selectedCompetition;
+            }
+            set
+            {
+                _selectedCompetition = value;
+                OnPropertyChanged("SelectedCompetition");
             }
         }
 
@@ -277,11 +298,11 @@ namespace First_appl_MVVM.ViewModels
         public int GetIdRating(int gymnstId, string inputDiscipline, List<Rating> ratings)
         {
             int idRating = 0;
-            if(inputDiscipline != null && inputDiscipline != "Total" && inputDiscipline != "Choose a discipline")
+            if (inputDiscipline != null && inputDiscipline != "Total" && inputDiscipline != "Choose a discipline")
             {
                 DisciplineIs discpline = (DisciplineIs)Enum.Parse(typeof(DisciplineIs), inputDiscipline);
                 Rating rating = ratings.Find(r => r.GymnastId == gymnstId && r.Discipline == discpline);
-                if(rating != null)
+                if (rating != null)
                 {
                     idRating = rating.Id;
                 }

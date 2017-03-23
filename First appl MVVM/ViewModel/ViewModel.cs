@@ -54,6 +54,13 @@ namespace First_appl_MVVM.ViewModels
             SaveRatingsCommand = new RelayComand(SaveRatings);
             UpdateViewRatingsCommand = new RelayComand(UpdateViewRatings);
             GetCompetitorsCommand = new RelayComand(GetCompetitors);
+            ShowNewWindowCommand = new RelayComand(ShowNewWindow);
+        }
+
+        public void ShowNewWindow()
+        {
+            InfCompetition infCompetition = new InfCompetition();
+            infCompetition.Show();
         }
 
         private void GetCompetitors()
@@ -70,10 +77,17 @@ namespace First_appl_MVVM.ViewModels
             }
             else
             {
-                int idNewGymnast =  _repository.AddGymnast(_newGymnastInfo);
-                _repository.AddCompetitor(_selectedCompetition.Id, idNewGymnast);
-                NewGymnastInfo = new Gymnast();         // обнуление текст бокса
-                UpdateViewRatings();
+                if(_selectedCompetition == null)
+                {
+                    MessageBox.Show("You did not create new competitions or did not choose from existing ones. Please choose or create new competitions!");
+                }
+                else
+                {
+                    int idNewGymnast = _repository.AddGymnast(_newGymnastInfo);
+                    _repository.AddCompetitor(_selectedCompetition.Id, idNewGymnast);
+                    NewGymnastInfo = new Gymnast();         // обнуление текст бокса
+                    UpdateViewRatings();
+                }
             }
         }
 
@@ -83,6 +97,7 @@ namespace First_appl_MVVM.ViewModels
             {
                 _repository.RemoveGymnast(_selectedPersonalRatingsDiscpline.Id);
                 _repository.RemoveDisciplineRatings(_selectedPersonalRatingsDiscpline.Id);
+                _repository.RemoveCompetitor(_selectedPersonalRatingsDiscpline.Id, _selectedCompetition.Id);
                 UpdateViewRatings();
             }
         }
@@ -133,6 +148,8 @@ namespace First_appl_MVVM.ViewModels
         public RelayComand SaveRatingsCommand { get; set; }
         public RelayComand UpdateViewRatingsCommand { get; set; }
         public RelayComand GetCompetitorsCommand { get; set; }
+        public RelayComand ShowNewWindowCommand { get; set; }
+
 
         public ObservableCollection<Competition> Competitions
         {

@@ -189,6 +189,20 @@ namespace First_appl_MVVM.Data
             }
         }
 
+        public void RemoveCompetitor(int idGymnast, int idCompetition)
+        {
+            using(SqlConnection myConection = new SqlConnection(_connectionString))
+            {
+                myConection.Open();
+                using (SqlCommand command = new SqlCommand("DELETE FROM [dbo].[Competitors] WHERE IdGymnast = @idGymnast AND IdCompetition = @idCompetition", myConection))
+                {
+                    command.Parameters.AddWithValue("@idGymnast", idGymnast);
+                    command.Parameters.AddWithValue("@idCompetition", idCompetition);
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
         public void RemoveDisciplineRatings(int removeId)
         {
             using (SqlConnection myConection = new SqlConnection(_connectionString))

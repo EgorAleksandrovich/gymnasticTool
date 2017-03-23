@@ -66,8 +66,15 @@
     <Compile Include="Data\Ratings.cs" />
     <Compile Include="Data\Repository.cs" />
     <Compile Include="Data\Competition.cs" />
+    <Compile Include="InfCompetition.xaml.cs">
+      <DependentUpon>InfCompetition.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\ViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
+    <Page Include="InfCompetition.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

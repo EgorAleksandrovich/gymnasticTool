@@ -5,7 +5,8 @@
         xmlns:local="clr-namespace:First_appl_MVVM"
         xmlns:viewModels="clr-namespace:First_appl_MVVM.ViewModels"
         xmlns:data="clr-namespace:First_appl_MVVM.Data"
-        Title="MainWindow" Height="auto" Width="500">
+        Title="MainWindow" Height="auto" Width="500"
+        Background="Aquamarine">
     
     <Window.DataContext>
         <viewModels:ViewModel/>
@@ -28,7 +29,7 @@
 
         <Menu Grid.Row="0" Grid.ColumnSpan="2" Height="25" VerticalAlignment="Top">
             <MenuItem Header="Competition">
-                <MenuItem Header="New competition"></MenuItem>
+                <MenuItem Header="New competition" Command="{Binding ShowNewWindowCommand}" ></MenuItem>
                 <MenuItem Header="Show competition">
                     <ListBox x:Name="Competitions" ItemsSource="{Binding Competitions}" DisplayMemberPath="CompetitionName" SelectedItem="{Binding SelectedCompetition}">
                         <i:Interaction.Triggers>

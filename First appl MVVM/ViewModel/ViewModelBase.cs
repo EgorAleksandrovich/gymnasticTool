@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace First_appl_MVVM.ViewModels
 {
-    class ViewModelBase : INotifyPropertyChanged
+    public class ViewModelBase : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged(string property = "")

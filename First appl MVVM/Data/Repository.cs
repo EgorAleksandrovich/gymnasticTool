@@ -13,11 +13,17 @@ namespace First_appl_MVVM.Data
 {
     public class Repository
     {
-        private string _connectionString = "Server=.\\SQLEXPRESS;Database=Mydatabase;Integrated security=true";
+        private string _connectionString = "Server=EGOR-PC;Database=DevelopmentDB;Integrated security=true";
+        private string _insertIndex;
+        private string _query;
+        private List<Gymnast> _gymnasts;
+        private List<Rating> _disciplineRatings;
+        private ObservableCollection<Competition> _competitions;
+        private List<Competitor> _сompetitors;
 
         public ObservableCollection<Competition> GetCompetitions()
         {
-            ObservableCollection<Competition> _competitions = new ObservableCollection<Competition>();
+            _competitions = new ObservableCollection<Competition>();
             SqlConnection myConection = new SqlConnection(_connectionString);
             myConection.Open();
             SqlCommand cmd = new SqlCommand("SELECT Id, CompetitionName, DateCompetition, Country FROM [dbo].[Competitions]", myConection);
@@ -40,7 +46,7 @@ namespace First_appl_MVVM.Data
 
         public List<Competitor> GetCompetitors(int idCompetition)
         {
-            List<Competitor> _сompetitors = new List<Competitor>();
+            _сompetitors = new List<Competitor>();
             SqlConnection myConection = new SqlConnection(_connectionString);
             myConection.Open();
             SqlCommand cmd = new SqlCommand("SELECT Id, IdGymnast FROM [dbo].[Competitors] WHERE idCompetition = @idCompetition", myConection);
@@ -63,31 +69,16 @@ namespace First_appl_MVVM.Data
 
         public List<Gymnast> GetGymnasts(List<Competitor> competitors)
         {
-            List<Gymnast> _gymnasts = new List<Gymnast>();
-            if (competitors == null)
+            _gymnasts = new List<Gymnast>();
+            if (competitors.Count == 0)
             {
-                MessageBox.Show("You did not create new competitions or did not choose from existing ones. Please choose or create new competitions!");
                 return _gymnasts;
             }
             else
             {
-                int count = 1;
-                string query = "SELECT Id, FirstName, LastName, Country FROM [dbo].[Gymnasts] WHERE Id IN(";
-                foreach (Competitor competitor in competitors)
-                {
-                    if (competitors.Count != count)
-                    {
-                        query = query + "'" + competitor.IdGymnast.ToString() + "'" + ",";
-                    }
-                    else
-                    {
-                        query = query + "'" + competitor.IdGymnast.ToString() + "'" + ")";
-                    }
-                    count++;
-                }
                 SqlConnection myConection = new SqlConnection(_connectionString);
                 myConection.Open();
-                SqlCommand cmd = new SqlCommand(query, myConection);
+                SqlCommand cmd = new SqlCommand(GetQuery(competitors), myConection);
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
@@ -106,9 +97,32 @@ namespace First_appl_MVVM.Data
             }
         }
 
+        public string GetQuery(List<Competitor> competitors)
+        {
+            _insertIndex = ")";
+            _query = String.Format("SELECT Id, FirstName, LastName, Country FROM [dbo].[Gymnasts] WHERE Id IN()");
+            string _idCompetitors = null;
+            int count = 1;
+
+            foreach (Competitor competitor in competitors)
+            {
+                if (competitors.Count != count)
+                {
+                    _idCompetitors = _idCompetitors + competitor.IdGymnast.ToString() + ",";
+                }
+                else
+                {
+                    _idCompetitors = _idCompetitors + competitor.IdGymnast.ToString();
+                }
+                count++;
+            }
+            _query = _query.Insert(_query.IndexOf(_insertIndex), _idCompetitors);
+            return _query;
+        }
+
         public List<Rating> GetDisciplineRatings()
         {
-            List<Rating> _disciplineRatings = new List<Rating>();
+            _disciplineRatings = new List<Rating>();
             SqlConnection myConection = new SqlConnection(_connectionString);
             myConection.Open();
             SqlCommand cmd = new SqlCommand("SELECT GymnastId, Rating, Discipline, Id FROM [dbo].[Ratings]", myConection);
@@ -120,6 +134,31 @@ namespace First_appl_MVVM.Data
                     GymnastId = Convert.ToInt32(reader["GymnastId"]),
                     Value = Convert.ToDouble(reader["Rating"]),
                     Discipline = (DisciplineIs)Enum.Parse(typeof(DisciplineIs), reader["Discipline"].ToString()),
+                    Id = Convert.ToInt32(reader["Id"])
+                };
+                _disciplineRatings.Add(rating);
+            }
+            reader.Close();
+            myConection.Close();
+            return _disciplineRatings;
+        }
+
+        public List<Rating> GetDisciplineRatings(string discipline, int idCompetition)
+        {
+            _disciplineRatings = new List<Rating>();
+            SqlConnection myConection = new SqlConnection(_connectionString);
+            myConection.Open();
+            SqlCommand cmd = new SqlCommand("SELECT GymnastId, Rating, Discipline, Id FROM [dbo].[Ratings] WHERE Discipline=@Discipline Discipline=@idCompetition", myConection);
+            cmd.Parameters.AddWithValue("@Discipline", discipline);
+            cmd.Parameters.AddWithValue("@IdCompetition", idCompetition);
+            SqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                Rating rating = new Rating()
+                {
+                    GymnastId = Convert.ToInt32(reader["GymnastId"]),
+                    Value = Convert.ToDouble(reader["Rating"]),
+                    Discipline = (DisciplineIs)Enum.Parse(typeof(DisciplineIs), discipline, true),
                     Id = Convert.ToInt32(reader["Id"])
                 };
                 _disciplineRatings.Add(rating);
@@ -189,14 +228,40 @@ namespace First_appl_MVVM.Data
             }
         }
 
+        public void RemoveCompetition(int removeId)
+        {
+            using (SqlConnection myConection = new SqlConnection(_connectionString))
+            {
+                myConection.Open();
+                using (SqlCommand command = new SqlCommand("DELETE FROM [dbo].[Competitions] WHERE Id=@id", myConection))
+                {
+                    command.Parameters.AddWithValue("@id", removeId);
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
         public void RemoveCompetitor(int idGymnast, int idCompetition)
         {
-            using(SqlConnection myConection = new SqlConnection(_connectionString))
+            using (SqlConnection myConection = new SqlConnection(_connectionString))
             {
                 myConection.Open();
                 using (SqlCommand command = new SqlCommand("DELETE FROM [dbo].[Competitors] WHERE IdGymnast = @idGymnast AND IdCompetition = @idCompetition", myConection))
                 {
                     command.Parameters.AddWithValue("@idGymnast", idGymnast);
+                    command.Parameters.AddWithValue("@idCompetition", idCompetition);
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void RemoveCompetitor(int idCompetition)
+        {
+            using (SqlConnection myConection = new SqlConnection(_connectionString))
+            {
+                myConection.Open();
+                using (SqlCommand command = new SqlCommand("DELETE FROM [dbo].[Competitors] WHERE IdCompetition = @idCompetition", myConection))
+                {
                     command.Parameters.AddWithValue("@idCompetition", idCompetition);
                     command.ExecuteNonQuery();
                 }
@@ -213,6 +278,22 @@ namespace First_appl_MVVM.Data
                     command.Parameters.AddWithValue("@removeId", removeId);
                     command.ExecuteNonQuery();
                 }
+            }
+        }
+
+        public Int32 AddCompetition(Competition competition)
+        {
+            using (SqlConnection myConnection = new SqlConnection(_connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("INSERT INTO [dbo].[Competitions] (CompetitionName, DateCompetition, Country) Output Inserted.Id Values (@competitionName, @dateCompetition, @country)", myConnection);
+                cmd.CommandType = CommandType.Text;
+                cmd.Connection = myConnection;
+                cmd.Parameters.AddWithValue("@competitionName", competition.CompetitionName);
+                cmd.Parameters.AddWithValue("@dateCompetition", competition.DateCompetition);
+                cmd.Parameters.AddWithValue("@country", competition.Country);
+                myConnection.Open();
+                int idCompetition = (int)cmd.ExecuteScalar();
+                return idCompetition;
             }
         }
     }

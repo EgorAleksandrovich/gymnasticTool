@@ -29,5 +29,77 @@ C:\Users\Egorka\Documents\Visual Studio 2013\Projects\gymnasticTool\gymnasticToo
 C:\Users\Egorka\Documents\Visual Studio 2013\Projects\gymnasticTool\gymnasticTool\First appl MVVM\obj\Debug\First_appl_MVVM.Properties.Resources.resources
 C:\Users\Egorka\Documents\Visual Studio 2013\Projects\gymnasticTool\gymnasticTool\First appl MVVM\obj\Debug\First appl MVVM.csproj.GenerateResource.Cache
 C:\Users\Egorka\Documents\Visual Studio 2013\Projects\gymnasticTool\gymnasticTool\First appl MVVM\bin\Debug\System.Windows.Interactivity.dll
-C:\Users\Egorka\Documents\Visual Studio 2013\Projects\gymnasticTool\gymnasticTool\First appl MVVM\obj\Debug\InfCompetition.baml
-C:\Users\Egorka\Documents\Visual Studio 2013\Projects\gymnasticTool\gymnasticTool\First appl MVVM\obj\Debug\InfCompetition.g.cs
+C:\Users\Egorka\Documents\Visual Studio 2013\Projects\gymnasticTool\gymnasticTool\First appl MVVM\obj\Debug\CompetitionInformationView.g.cs
+C:\Users\Egorka\Documents\Visual Studio 2013\Projects\gymnasticTool\gymnasticTool\First appl MVVM\obj\Debug\CompetitionInformationView.baml
+D:\Projects\gymnasticTool\gymnasticTool\First appl MVVM\bin\Debug\First appl MVVM.exe.config
+D:\Projects\gymnasticTool\gymnasticTool\First appl MVVM\bin\Debug\First appl MVVM.exe
+D:\Projects\gymnasticTool\gymnasticTool\First appl MVVM\bin\Debug\First appl MVVM.pdb
+D:\Projects\gymnasticTool\gymnasticTool\First appl MVVM\bin\Debug\System.Windows.Interactivity.dll
+D:\Projects\gymnasticTool\gymnasticTool\First appl MVVM\obj\Debug\First appl MVVM.csprojResolveAssemblyReference.cache
+D:\Projects\gymnasticTool\gymnasticTool\First appl MVVM\obj\Debug\CompetitionInformationView.g.cs
+D:\Projects\gymnasticTool\gymnasticTool\First appl MVVM\obj\Debug\MainWindow.g.cs
+D:\Projects\gymnasticTool\gymnasticTool\First appl MVVM\obj\Debug\App.g.cs
+D:\Projects\gymnasticTool\gymnasticTool\First appl MVVM\obj\Debug\GeneratedInternalTypeHelper.g.cs
+D:\Projects\gymnasticTool\gymnasticTool\First appl MVVM\obj\Debug\First appl MVVM_MarkupCompile.cache
+D:\Projects\gymnasticTool\gymnasticTool\First appl MVVM\obj\Debug\First appl MVVM_MarkupCompile.lref
+D:\Projects\gymnasticTool\gymnasticTool\First appl MVVM\obj\Debug\CompetitionInformationView.baml
+D:\Projects\gymnasticTool\gymnasticTool\First appl MVVM\obj\Debug\MainWindow.baml
+D:\Projects\gymnasticTool\gymnasticTool\First appl MVVM\obj\Debug\First appl MVVM.g.resources
+D:\Projects\gymnasticTool\gymnasticTool\First appl MVVM\obj\Debug\First_appl_MVVM.Properties.Resources.resources
+D:\Projects\gymnasticTool\gymnasticTool\First appl MVVM\obj\Debug\First appl MVVM.csproj.GenerateResource.Cache
+D:\Projects\gymnasticTool\gymnasticTool\First appl MVVM\obj\Debug\First appl MVVM.exe
+D:\Projects\gymnasticTool\gymnasticTool\First appl MVVM\obj\Debug\First appl MVVM.pdb
+D:\Other\Development\Projects\gymnasticTool\gymnasticTool\First appl MVVM\bin\Debug\First appl MVVM.exe.config
+D:\Other\Development\Projects\gymnasticTool\gymnasticTool\First appl MVVM\bin\Debug\First appl MVVM.exe
+D:\Other\Development\Projects\gymnasticTool\gymnasticTool\First appl MVVM\bin\Debug\First appl MVVM.pdb
+D:\Other\Development\Projects\gymnasticTool\gymnasticTool\First appl MVVM\bin\Debug\System.Windows.Interactivity.dll
+D:\Other\Development\Projects\gymnasticTool\gymnasticTool\First appl MVVM\obj\Debug\First appl MVVM.csprojResolveAssemblyReference.cache
+D:\Other\Development\Projects\gymnasticTool\gymnasticTool\First appl MVVM\obj\Debug\CompetitionInformationView.g.cs
+D:\Other\Development\Projects\gymnasticTool\gymnasticTool\First appl MVVM\obj\Debug\MainWindow.g.cs
+D:\Other\Development\Projects\gymnasticTool\gymnasticTool\First appl MVVM\obj\Debug\App.g.cs
+D:\Other\Development\Projects\gymnasticTool\gymnasticTool\First appl MVVM\obj\Debug\GeneratedInternalTypeHelper.g.cs
+D:\Other\Development\Projects\gymnasticTool\gymnasticTool\First appl MVVM\obj\Debug\First appl MVVM_MarkupCompile.cache
+D:\Other\Development\Projects\gymnasticTool\gymnasticTool\First appl MVVM\obj\Debug\First appl MVVM_MarkupCompile.lref
+D:\Other\Development\Projects\gymnasticTool\gymnasticTool\First appl MVVM\obj\Debug\CompetitionInformationView.baml
+D:\Other\Development\Projects\gymnasticTool\gymnasticTool\First appl MVVM\obj\Debug\MainWindow.baml
+D:\Other\Development\Projects\gymnasticTool\gymnasticTool\First appl MVVM\obj\Debug\First appl MVVM.g.resources
+D:\Other\Development\Projects\gymnasticTool\gymnasticTool\First appl MVVM\obj\Debug\First_appl_MVVM.Properties.Resources.resources
+D:\Other\Development\Projects\gymnasticTool\gymnasticTool\First appl MVVM\obj\Debug\First appl MVVM.csproj.GenerateResource.Cache
+D:\Other\Development\Projects\gymnasticTool\gymnasticTool\First appl MVVM\obj\Debug\First appl MVVM.exe
+D:\Other\Development\Projects\gymnasticTool\gymnasticTool\First appl MVVM\obj\Debug\First appl MVVM.pdb
+E:\Other\Development\Projects\gymnasticTool\gymnasticTool\First appl MVVM\bin\Debug\First appl MVVM.exe.config
+E:\Other\Development\Projects\gymnasticTool\gymnasticTool\First appl MVVM\bin\Debug\First appl MVVM.exe
+E:\Other\Development\Projects\gymnasticTool\gymnasticTool\First appl MVVM\bin\Debug\First appl MVVM.pdb
+E:\Other\Development\Projects\gymnasticTool\gymnasticTool\First appl MVVM\bin\Debug\System.Windows.Interactivity.dll
+E:\Other\Development\Projects\gymnasticTool\gymnasticTool\First appl MVVM\obj\Debug\First appl MVVM.csprojResolveAssemblyReference.cache
+E:\Other\Development\Projects\gymnasticTool\gymnasticTool\First appl MVVM\obj\Debug\CompetitionInformationView.g.cs
+E:\Other\Development\Projects\gymnasticTool\gymnasticTool\First appl MVVM\obj\Debug\MainWindow.g.cs
+E:\Other\Development\Projects\gymnasticTool\gymnasticTool\First appl MVVM\obj\Debug\App.g.cs
+E:\Other\Development\Projects\gymnasticTool\gymnasticTool\First appl MVVM\obj\Debug\GeneratedInternalTypeHelper.g.cs
+E:\Other\Development\Projects\gymnasticTool\gymnasticTool\First appl MVVM\obj\Debug\First appl MVVM_MarkupCompile.cache
+E:\Other\Development\Projects\gymnasticTool\gymnasticTool\First appl MVVM\obj\Debug\First appl MVVM_MarkupCompile.lref
+E:\Other\Development\Projects\gymnasticTool\gymnasticTool\First appl MVVM\obj\Debug\CompetitionInformationView.baml
+E:\Other\Development\Projects\gymnasticTool\gymnasticTool\First appl MVVM\obj\Debug\MainWindow.baml
+E:\Other\Development\Projects\gymnasticTool\gymnasticTool\First appl MVVM\obj\Debug\First appl MVVM.g.resources
+E:\Other\Development\Projects\gymnasticTool\gymnasticTool\First appl MVVM\obj\Debug\First_appl_MVVM.Properties.Resources.resources
+E:\Other\Development\Projects\gymnasticTool\gymnasticTool\First appl MVVM\obj\Debug\First appl MVVM.csproj.GenerateResource.Cache
+E:\Other\Development\Projects\gymnasticTool\gymnasticTool\First appl MVVM\obj\Debug\First appl MVVM.exe
+E:\Other\Development\Projects\gymnasticTool\gymnasticTool\First appl MVVM\obj\Debug\First appl MVVM.pdb
+E:\Development\Projects\gymnasticTool\gymnasticTool\First appl MVVM\bin\Debug\First appl MVVM.exe.config
+E:\Development\Projects\gymnasticTool\gymnasticTool\First appl MVVM\bin\Debug\First appl MVVM.exe
+E:\Development\Projects\gymnasticTool\gymnasticTool\First appl MVVM\bin\Debug\First appl MVVM.pdb
+E:\Development\Projects\gymnasticTool\gymnasticTool\First appl MVVM\bin\Debug\System.Windows.Interactivity.dll
+E:\Development\Projects\gymnasticTool\gymnasticTool\First appl MVVM\obj\Debug\First appl MVVM.csprojResolveAssemblyReference.cache
+E:\Development\Projects\gymnasticTool\gymnasticTool\First appl MVVM\obj\Debug\CompetitionInformationView.g.cs
+E:\Development\Projects\gymnasticTool\gymnasticTool\First appl MVVM\obj\Debug\MainWindow.g.cs
+E:\Development\Projects\gymnasticTool\gymnasticTool\First appl MVVM\obj\Debug\App.g.cs
+E:\Development\Projects\gymnasticTool\gymnasticTool\First appl MVVM\obj\Debug\GeneratedInternalTypeHelper.g.cs
+E:\Development\Projects\gymnasticTool\gymnasticTool\First appl MVVM\obj\Debug\First appl MVVM_MarkupCompile.cache
+E:\Development\Projects\gymnasticTool\gymnasticTool\First appl MVVM\obj\Debug\First appl MVVM_MarkupCompile.lref
+E:\Development\Projects\gymnasticTool\gymnasticTool\First appl MVVM\obj\Debug\CompetitionInformationView.baml
+E:\Development\Projects\gymnasticTool\gymnasticTool\First appl MVVM\obj\Debug\MainWindow.baml
+E:\Development\Projects\gymnasticTool\gymnasticTool\First appl MVVM\obj\Debug\First appl MVVM.g.resources
+E:\Development\Projects\gymnasticTool\gymnasticTool\First appl MVVM\obj\Debug\First_appl_MVVM.Properties.Resources.resources
+E:\Development\Projects\gymnasticTool\gymnasticTool\First appl MVVM\obj\Debug\First appl MVVM.csproj.GenerateResource.Cache
+E:\Development\Projects\gymnasticTool\gymnasticTool\First appl MVVM\obj\Debug\First appl MVVM.exe
+E:\Development\Projects\gymnasticTool\gymnasticTool\First appl MVVM\obj\Debug\First appl MVVM.pdb

@@ -27,6 +27,7 @@ namespace First_appl_MVVM.ViewModels
         private ObservableCollection<Competition> _competitions;
         private Competition _selectedCompetition;
         private List<Competitor> _competitors;
+        private WindowsHelper _windowHelper;
 
         public ViewModel()
         {
@@ -59,8 +60,10 @@ namespace First_appl_MVVM.ViewModels
 
         public void ShowNewWindow()
         {
-            InfCompetition infCompetition = new InfCompetition();
-            infCompetition.Show();
+            CompetitionInformationViewModel competitionInformationViewModel = new CompetitionInformationViewModel();
+            competitionInformationViewModel.WindowHelper = _windowHelper;
+            _windowHelper.OpenWindow(competitionInformationViewModel);
+            UpdateViewRatings();
         }
 
         private void GetCompetitors()
@@ -77,7 +80,7 @@ namespace First_appl_MVVM.ViewModels
             }
             else
             {
-                if(_selectedCompetition == null)
+                if (_selectedCompetition == null)
                 {
                     MessageBox.Show("You did not create new competitions or did not choose from existing ones. Please choose or create new competitions!");
                 }
@@ -85,7 +88,7 @@ namespace First_appl_MVVM.ViewModels
                 {
                     int idNewGymnast = _repository.AddGymnast(_newGymnastInfo);
                     _repository.AddCompetitor(_selectedCompetition.Id, idNewGymnast);
-                    NewGymnastInfo = new Gymnast();         // обнуление текст бокса
+                    NewGymnastInfo = new Gymnast();
                     UpdateViewRatings();
                 }
             }
@@ -116,29 +119,38 @@ namespace First_appl_MVVM.ViewModels
         public void UpdateViewRatings()
         {
             if (_personalRatingsDiscplins != null)
-            {
-                SaveRatings();
-            }
-            _competitors = _repository.GetCompetitors(_selectedCompetition.Id);
-            _gymnasts = _repository.GetGymnasts(_competitors);
-            _ratings = _repository.GetDisciplineRatings();
-            ObservableCollection<PersonalRatingsDiscpline> newPersonalRatingsDiscplins = new ObservableCollection<PersonalRatingsDiscpline>();
-            foreach (Gymnast gymnast in _gymnasts)
-            {
-                PersonalRatingsDiscpline personalRatingsDiscpline = new PersonalRatingsDiscpline
+            foreach (PersonalRatingsDiscpline personalRatingsDiscplin in _personalRatingsDiscplins)
+                if (personalRatingsDiscplin != null && personalRatingsDiscplin.IsUpdated)
                 {
-                    FirstName = GetFirstName(_gymnasts, gymnast.ID),
-                    LastName = GetLastName(_gymnasts, gymnast.ID),
-                    Country = GetCountry(_gymnasts, gymnast.ID),
-                    Rating = GetRating(gymnast.ID, _selectedDiscipline),
-                    IsUpdated = false,
-                    Discipline = _selectedDiscipline,
-                    Id = gymnast.ID,
-                    IdRating = GetIdRating(gymnast.ID, _selectedDiscipline, _ratings)
-                };
-                newPersonalRatingsDiscplins.Add(personalRatingsDiscpline);
+                    SaveRatings();
+                }
+            if (_selectedCompetition == null)
+            {
+                MessageBox.Show("You did not create new competitions or did not choose from existing ones. Please choose or create new competitions!");
             }
-            PersonalRatingsDiscplins = newPersonalRatingsDiscplins;
+            else
+            {
+                _competitors = _repository.GetCompetitors(_selectedCompetition.Id);
+                _gymnasts = _repository.GetGymnasts(_competitors);
+                _ratings = _repository.GetDisciplineRatings();
+                ObservableCollection<PersonalRatingsDiscpline> newPersonalRatingsDiscplins = new ObservableCollection<PersonalRatingsDiscpline>();
+                foreach (Gymnast gymnast in _gymnasts)
+                {
+                    PersonalRatingsDiscpline personalRatingsDiscpline = new PersonalRatingsDiscpline
+                    {
+                        FirstName = GetFirstName(_gymnasts, gymnast.ID),
+                        LastName = GetLastName(_gymnasts, gymnast.ID),
+                        Country = GetCountry(_gymnasts, gymnast.ID),
+                        Rating = GetRating(gymnast.ID, _selectedDiscipline),
+                        IsUpdated = false,
+                        Discipline = _selectedDiscipline,
+                        Id = gymnast.ID,
+                        IdRating = GetIdRating(gymnast.ID, _selectedDiscipline, _ratings)
+                    };
+                    newPersonalRatingsDiscplins.Add(personalRatingsDiscpline);
+                }
+                PersonalRatingsDiscplins = newPersonalRatingsDiscplins;
+            }
         }
 
         public ObservableCollection<string> Disciplins { get; set; }
@@ -150,6 +162,17 @@ namespace First_appl_MVVM.ViewModels
         public RelayComand GetCompetitorsCommand { get; set; }
         public RelayComand ShowNewWindowCommand { get; set; }
 
+        public WindowsHelper WindowHelper
+        {
+            get
+            {
+                return _windowHelper;
+            }
+            set
+            {
+                _windowHelper = value;
+            }
+        }
 
         public ObservableCollection<Competition> Competitions
         {
@@ -278,6 +301,7 @@ namespace First_appl_MVVM.ViewModels
 
         public double GetRating(int id, string inputDiscipline)
         {
+            
             double rating = 0;
             if (inputDiscipline == "Total")
             {

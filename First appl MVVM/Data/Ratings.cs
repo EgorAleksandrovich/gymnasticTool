@@ -8,7 +8,7 @@ namespace First_appl_MVVM.Data
 {
     public class Rating
     {
-        public DisciplineIs Discipline { get; set; }
+        public Discipline Discipline { get; set; }
         public double Value { get; set; }
         public int GymnastId { get; set; }
         public int IdCompetition { get; set; }

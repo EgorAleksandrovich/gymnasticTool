@@ -133,7 +133,7 @@ namespace First_appl_MVVM.Data
                 {
                     GymnastId = Convert.ToInt32(reader["GymnastId"]),
                     Value = Convert.ToDouble(reader["Rating"]),
-                    Discipline = (DisciplineIs)Enum.Parse(typeof(DisciplineIs), reader["Discipline"].ToString()),
+                    Discipline = new Discipline{DisciplineEnum = (DisciplineIs)Enum.Parse(typeof(DisciplineIs), reader["Discipline"].ToString())},
                     Id = Convert.ToInt32(reader["Id"])
                 };
                 _disciplineRatings.Add(rating);
@@ -143,14 +143,14 @@ namespace First_appl_MVVM.Data
             return _disciplineRatings;
         }
 
-        public List<Rating> GetDisciplineRatings(string discipline, int idCompetition)
+        public List<Rating> GetDisciplineRatings(string discipline, int competitionId)
         {
             _disciplineRatings = new List<Rating>();
             SqlConnection myConection = new SqlConnection(_connectionString);
             myConection.Open();
-            SqlCommand cmd = new SqlCommand("SELECT GymnastId, Rating, Discipline, Id FROM [dbo].[Ratings] WHERE Discipline=@Discipline Discipline=@idCompetition", myConection);
+            SqlCommand cmd = new SqlCommand("SELECT GymnastId, Rating, Discipline, Id FROM [dbo].[Ratings] WHERE Discipline=@Discipline AND CompetitionId=@CompetitionId", myConection);
             cmd.Parameters.AddWithValue("@Discipline", discipline);
-            cmd.Parameters.AddWithValue("@IdCompetition", idCompetition);
+            cmd.Parameters.AddWithValue("@CompetitionId", competitionId);
             SqlDataReader reader = cmd.ExecuteReader();
             while (reader.Read())
             {
@@ -158,8 +158,9 @@ namespace First_appl_MVVM.Data
                 {
                     GymnastId = Convert.ToInt32(reader["GymnastId"]),
                     Value = Convert.ToDouble(reader["Rating"]),
-                    Discipline = (DisciplineIs)Enum.Parse(typeof(DisciplineIs), discipline, true),
-                    Id = Convert.ToInt32(reader["Id"])
+                    Discipline = new Discipline { DisciplineEnum = (DisciplineIs)Enum.Parse(typeof(DisciplineIs), discipline) },
+                    Id = Convert.ToInt32(reader["Id"]),
+                    IdCompetition = competitionId
                 };
                 _disciplineRatings.Add(rating);
             }
@@ -202,13 +203,14 @@ namespace First_appl_MVVM.Data
         {
             using (SqlConnection myConection = new SqlConnection(_connectionString))
             {
-                SqlCommand cmd = new SqlCommand("MERGE [dbo].[Ratings] WITH (SERIALIZABLE) AS R USING (VALUES (@Id, @rating)) AS U (Id, Rating) ON U.Id = R.Id WHEN MATCHED THEN UPDATE SET R.Rating = U.Rating WHEN NOT MATCHED THEN INSERT (GymnastId, Rating, Discipline) VALUES (@gymnastId, @rating, @discipline);", myConection);
+                SqlCommand cmd = new SqlCommand("MERGE [dbo].[Ratings] WITH (SERIALIZABLE) AS R USING (VALUES (@Id, @rating)) AS U (Id, Rating) ON U.Id = R.Id WHEN MATCHED THEN UPDATE SET R.Rating = U.Rating WHEN NOT MATCHED THEN INSERT (GymnastId, Rating, Discipline, CompetitionId) VALUES (@gymnastId, @rating, @discipline, @competitionId);", myConection);
                 cmd.CommandType = CommandType.Text;
                 cmd.Connection = myConection;
                 cmd.Parameters.AddWithValue("@discipline", personalRatingsDiscpline.Discipline);
                 cmd.Parameters.AddWithValue("@gymnastId", personalRatingsDiscpline.Id);
                 cmd.Parameters.AddWithValue("@rating", personalRatingsDiscpline.Rating);
                 cmd.Parameters.AddWithValue("@Id", personalRatingsDiscpline.IdRating);
+                cmd.Parameters.AddWithValue("@competitionId", personalRatingsDiscpline.CompetitionId);
                 myConection.Open();
                 cmd.ExecuteNonQuery();
             }

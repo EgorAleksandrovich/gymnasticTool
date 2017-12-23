@@ -145,7 +145,8 @@ namespace First_appl_MVVM.ViewModels
                         IsUpdated = false,
                         Discipline = _selectedDiscipline,
                         Id = gymnast.ID,
-                        IdRating = GetIdRating(gymnast.ID, _selectedDiscipline, _ratings)
+                        IdRating = GetIdRating(gymnast.ID, _selectedDiscipline, _ratings),
+                        CompetitionId = _selectedCompetition.Id                      
                     };
                     newPersonalRatingsDiscplins.Add(personalRatingsDiscpline);
                 }
@@ -341,8 +342,7 @@ namespace First_appl_MVVM.ViewModels
             int idRating = 0;
             if (inputDiscipline != null && inputDiscipline != "Total" && inputDiscipline != "Choose a discipline")
             {
-                DisciplineIs discpline = (DisciplineIs)Enum.Parse(typeof(DisciplineIs), inputDiscipline);
-                Rating rating = ratings.Find(r => r.GymnastId == gymnstId && r.Discipline == discpline);
+                Rating rating = ratings.Find(r => r.GymnastId == gymnstId && r.Discipline.DisplayName == inputDiscipline);
                 if (rating != null)
                 {
                     idRating = rating.Id;

@@ -15,6 +15,7 @@ namespace First_appl_MVVM.Data
         public string Discipline { get; set; }
         public int Id { get; set; }
         public int IdRating { get; set; }
+        public int CompetitionId { get; set; }
         public double Rating
         {
             get 

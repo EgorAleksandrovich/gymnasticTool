@@ -217,6 +217,23 @@ namespace First_appl_MVVM.Data
             personalRatingsDiscpline.IsUpdated = false;
         }
 
+        public void SaveRatings(Rating rating)
+        {
+            using (SqlConnection myConection = new SqlConnection(_connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("MERGE [dbo].[Ratings] WITH (SERIALIZABLE) AS R USING (VALUES (@Id, @rating)) AS U (Id, Rating) ON U.Id = R.Id WHEN MATCHED THEN UPDATE SET R.Rating = U.Rating WHEN NOT MATCHED THEN INSERT (GymnastId, Rating, Discipline, CompetitionId) VALUES (@gymnastId, @rating, @discipline, @competitionId);", myConection);
+                cmd.CommandType = CommandType.Text;
+                cmd.Connection = myConection;
+                cmd.Parameters.AddWithValue("@discipline", rating.Discipline.DisciplineEnum.ToString());
+                cmd.Parameters.AddWithValue("@gymnastId", rating.GymnastId);
+                cmd.Parameters.AddWithValue("@rating", rating.Value);
+                cmd.Parameters.AddWithValue("@Id", rating.Id);
+                cmd.Parameters.AddWithValue("@competitionId", rating.IdCompetition);
+                myConection.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+
         public void RemoveGymnast(int removeId)
         {
             using (SqlConnection myConection = new SqlConnection(_connectionString))

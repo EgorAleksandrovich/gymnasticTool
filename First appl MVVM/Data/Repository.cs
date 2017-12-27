@@ -287,12 +287,12 @@ namespace First_appl_MVVM.Data
             }
         }
 
-        public void RemoveDisciplineRatings(int removeId)
+        public void RemoveRating(int removeId)
         {
             using (SqlConnection myConection = new SqlConnection(_connectionString))
             {
                 myConection.Open();
-                using (SqlCommand command = new SqlCommand("DELETE FROM [dbo].[Ratings] WHERE GymnastId=@removeId", myConection))
+                using (SqlCommand command = new SqlCommand("DELETE FROM [dbo].[Ratings] WHERE Id=@removeId", myConection))
                 {
                     command.Parameters.AddWithValue("@removeId", removeId);
                     command.ExecuteNonQuery();

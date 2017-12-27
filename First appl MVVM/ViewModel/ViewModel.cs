@@ -99,7 +99,7 @@ namespace First_appl_MVVM.ViewModels
             if (_selectedPersonalRatingsDiscpline != null)
             {
                 _repository.RemoveGymnast(_selectedPersonalRatingsDiscpline.Id);
-                _repository.RemoveDisciplineRatings(_selectedPersonalRatingsDiscpline.Id);
+                _repository.RemoveRating(_selectedPersonalRatingsDiscpline.IdRating);
                 _repository.RemoveCompetitor(_selectedPersonalRatingsDiscpline.Id, _selectedCompetition.Id);
                 UpdateViewRatings();
             }
